@@ -1,5 +1,5 @@
 Class {
-	#name : #TodoTaskPresenter,
+	#name : #MLSTodoTaskPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'task',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #initialization }
-TodoTaskPresenter >> accept [
+MLSTodoTaskPresenter >> accept [
 
 	self task 
 		title: titlePresenter text;
@@ -17,7 +17,7 @@ TodoTaskPresenter >> accept [
 ]
 
 { #category : #initialization }
-TodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MLSTodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 
 	aDialogWindowPresenter 
 		title: 'New task';
@@ -30,7 +30,7 @@ TodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 ]
 
 { #category : #initialization }
-TodoTaskPresenter >> initializePresenters [
+MLSTodoTaskPresenter >> initializePresenters [
 
 	titlePresenter := self newTextInput.
 
@@ -40,20 +40,20 @@ TodoTaskPresenter >> initializePresenters [
 ]
 
 { #category : #accessing }
-TodoTaskPresenter >> task [
+MLSTodoTaskPresenter >> task [
 
 	^ task
 ]
 
 { #category : #accessing }
-TodoTaskPresenter >> task: aTask [
+MLSTodoTaskPresenter >> task: aTask [
 
 	task := aTask.
 	self updatePresenter
 ]
 
 { #category : #initialization }
-TodoTaskPresenter >> updatePresenter [
+MLSTodoTaskPresenter >> updatePresenter [
 
 	task ifNotNil: [  
 		titlePresenter text: (task title ifNil: [ '' ]) ]

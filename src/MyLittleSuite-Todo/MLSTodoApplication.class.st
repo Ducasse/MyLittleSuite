@@ -2,13 +2,13 @@
 `TodoApplication new run`
 "
 Class {
-	#name : #TodoApplication,
+	#name : #MLSTodoApplication,
 	#superclass : #SpApplication,
 	#category : #'MyLittleSuite-Todo'
 }
 
 { #category : #running }
-TodoApplication >> start [
+MLSTodoApplication >> start [
 
-	TodoListPresenter open
+	MSLTodoListPresenter open
 ]

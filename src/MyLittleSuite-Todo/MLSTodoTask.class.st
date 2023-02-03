@@ -1,5 +1,5 @@
 Class {
-	#name : #TodoTask,
+	#name : #MLSTodoTask,
 	#superclass : #Object,
 	#instVars : [
 		'done',
@@ -12,56 +12,54 @@ Class {
 }
 
 { #category : #'task management' }
-TodoTask class >> addTask: aTask [
+MLSTodoTask class >> addTask: aTask [
 	
 	(tasks includes: aTask)
 		ifFalse: [ tasks add: aTask ]
 ]
 
 { #category : #'task management' }
-TodoTask class >> deleteTask: aTask [
+MLSTodoTask class >> deleteTask: aTask [
 
 	tasks remove: aTask ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
-TodoTask class >> populateDB [
-	<script>
-	
-	TodoTask new
-		title: 'Task One';
-		save.
-	TodoTask new
-		title: 'Task Two';
-		save
-]
-
 { #category : #'task management' }
-TodoTask class >> tasks [ 
+MLSTodoTask class >> tasks [ 
 
 	^ tasks ifNil: [ tasks := OrderedCollection new]
 ]
 
+{ #category : #'access protection' }
+MLSTodoTask class >> withNewDuring: aBlock [
+	"Make sure that we execute aBlock on a new singleton"
+	
+	| tmp |
+	[ tmp := self tasks.
+	tasks := OrderedCollection new.
+	aBlock value ] ensure: [ tasks := tmp ]
+]
+
 { #category : #saving }
-TodoTask >> delete [
+MLSTodoTask >> delete [
 
 	self class deleteTask: self
 ]
 
 { #category : #accessing }
-TodoTask >> done [
+MLSTodoTask >> done [
 
 	^ done
 ]
 
 { #category : #accessing }
-TodoTask >> done: anObject [
+MLSTodoTask >> done: anObject [
 
 	done := anObject
 ]
 
 { #category : #initialization }
-TodoTask >> initialize [
+MLSTodoTask >> initialize [
 
 	super initialize.
 	self done: false.
@@ -69,31 +67,31 @@ TodoTask >> initialize [
 ]
 
 { #category : #testing }
-TodoTask >> isDone [
+MLSTodoTask >> isDone [
 
 	^ self done
 ]
 
 { #category : #printing }
-TodoTask >> printOn: aStream [
+MLSTodoTask >> printOn: aStream [
 	super printOn: aStream.
 	aStream space nextPutAll: self title.
 ]
 
 { #category : #saving }
-TodoTask >> save [
+MLSTodoTask >> save [
 
 	self class addTask: self
 ]
 
 { #category : #accessing }
-TodoTask >> title [
+MLSTodoTask >> title [
 
 	^ title
 ]
 
 { #category : #accessing }
-TodoTask >> title: anObject [
+MLSTodoTask >> title: anObject [
 
 	title := anObject
 ]

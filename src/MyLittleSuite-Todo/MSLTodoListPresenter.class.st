@@ -4,7 +4,7 @@ TodoApplication new run.
 ```
 "
 Class {
-	#name : #TodoListPresenter,
+	#name : #MSLTodoListPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'todoListPresenter',
@@ -14,22 +14,22 @@ Class {
 }
 
 { #category : #'instance creation' }
-TodoListPresenter class >> open [ 
+MSLTodoListPresenter class >> open [ 
 	<script>
 	self new open
 ]
 
 { #category : #initialization }
-TodoListPresenter >> addTask [
+MSLTodoListPresenter >> addTask [
 
-	(TodoTaskPresenter newApplication: self application) 
-		task: TodoTask new;
+	(MLSTodoTaskPresenter newApplication: self application) 
+		task: MLSTodoTask new;
 		openModal.
 	self updatePresenter
 ]
 
 { #category : #initialization }
-TodoListPresenter >> defaultLayout [ 
+MSLTodoListPresenter >> defaultLayout [ 
 	
 	^ (SpBoxLayout newTopToBottom 
 		add: todoListPresenter;
@@ -41,16 +41,17 @@ TodoListPresenter >> defaultLayout [
 ]
 
 { #category : #initialization }
-TodoListPresenter >> editSelectedTask [
+MSLTodoListPresenter >> editSelectedTask [
 
-	(TodoTaskPresenter newApplication: self application)
+	(MLSTodoTaskPresenter newApplication: self application)
 		task: todoListPresenter selection selectedItem;
 		openModal.
+	"I do not really like to flush all the items and get them all once again."
 	self updatePresenter
 ]
 
 { #category : #initialization }
-TodoListPresenter >> initializePresenters [
+MSLTodoListPresenter >> initializePresenters [
 
 	todoListPresenter := self newTable
 		                     addColumn:
@@ -74,7 +75,7 @@ TodoListPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-TodoListPresenter >> initializeWindow: aWindowPresenter [
+MSLTodoListPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter 
 		title: 'Todo List';
@@ -82,14 +83,14 @@ TodoListPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #initialization }
-TodoListPresenter >> removeSelectedTask [
+MSLTodoListPresenter >> removeSelectedTask [
 
 	todoListPresenter selection selectedItem delete.
 	self updatePresenter
 ]
 
 { #category : #initialization }
-TodoListPresenter >> todoListContextMenu [
+MSLTodoListPresenter >> todoListContextMenu [
 
 	^ self newMenu 
 		addItem: [ :item | item 
@@ -101,6 +102,6 @@ TodoListPresenter >> todoListContextMenu [
 ]
 
 { #category : #initialization }
-TodoListPresenter >> updatePresenter [
-	todoListPresenter items: TodoTask tasks
+MSLTodoListPresenter >> updatePresenter [
+	todoListPresenter items: MLSTodoTask tasks
 ]

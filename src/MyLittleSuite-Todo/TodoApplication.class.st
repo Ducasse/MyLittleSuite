@@ -7,8 +7,8 @@ Class {
 	#category : #'MyLittleSuite-Todo'
 }
 
-{ #category : #accessing }
-TodoApplication >> start [ 
+{ #category : #running }
+TodoApplication >> start [
 
 	TodoListPresenter open
 ]

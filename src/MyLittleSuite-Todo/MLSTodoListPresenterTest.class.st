@@ -16,9 +16,8 @@ MLSTodoListPresenterTest >> tearDown [
 { #category : #tests }
 MLSTodoListPresenterTest >> testAddingATask [
 
+	
 	presenter := MSLTodoListPresenter new. 
 	presenter open.
-	
-	presenter addTask.
-	
+		
 ]

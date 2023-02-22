@@ -3,7 +3,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'done',
-		'title'
+		'title',
+		'description',
+		'doneDate',
+		'dueDate'
 	],
 	#classInstVars : [
 		'tasks'
@@ -47,6 +50,18 @@ MLSTodoTask >> delete [
 ]
 
 { #category : #accessing }
+MLSTodoTask >> description [
+
+	^ description
+]
+
+{ #category : #accessing }
+MLSTodoTask >> description: anObject [
+
+	description := anObject
+]
+
+{ #category : #accessing }
 MLSTodoTask >> done [
 
 	^ done
@@ -56,6 +71,30 @@ MLSTodoTask >> done [
 MLSTodoTask >> done: anObject [
 
 	done := anObject
+]
+
+{ #category : #accessing }
+MLSTodoTask >> doneDate [
+
+	^ doneDate
+]
+
+{ #category : #accessing }
+MLSTodoTask >> doneDate: anObject [
+
+	doneDate := anObject
+]
+
+{ #category : #accessing }
+MLSTodoTask >> dueDate [
+
+	^ dueDate
+]
+
+{ #category : #accessing }
+MLSTodoTask >> dueDate: anObject [
+
+	dueDate := anObject
 ]
 
 { #category : #initialization }
@@ -74,8 +113,10 @@ MLSTodoTask >> isDone [
 
 { #category : #printing }
 MLSTodoTask >> printOn: aStream [
+
 	super printOn: aStream.
 	aStream space nextPutAll: self title.
+	done ifTrue: [ aStream space nextPutAll: 'done' ]
 ]
 
 { #category : #saving }

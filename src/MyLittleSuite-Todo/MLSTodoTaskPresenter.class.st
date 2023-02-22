@@ -33,6 +33,7 @@ MLSTodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 MLSTodoTaskPresenter >> initializePresenters [
 
 	titlePresenter := self newTextInput.
+	titlePresenter selectAll.
 
 	self layout: (SpBoxLayout newTopToBottom
 				add: titlePresenter expand: false;

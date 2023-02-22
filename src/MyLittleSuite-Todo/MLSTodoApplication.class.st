@@ -8,7 +8,14 @@ Class {
 }
 
 { #category : #running }
-MLSTodoApplication >> start [
+MLSTodoApplication class >> run [
+	"self run"
+	self new run
+]
 
+{ #category : #running }
+MLSTodoApplication >> start [
+	"self new run"
+	
 	MSLTodoListPresenter open
 ]

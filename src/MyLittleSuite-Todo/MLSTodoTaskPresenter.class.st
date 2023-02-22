@@ -3,59 +3,54 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'task',
-		'titlePresenter'
+		'title',
+		'dueDate',
+		'done',
+		'doneDate',
+		'description'
 	],
 	#category : #'MyLittleSuite-Todo'
 }
 
-{ #category : #initialization }
+{ #category : #actions }
 MLSTodoTaskPresenter >> accept [
 
 	self task 
-		title: titlePresenter text;
+		title: title text;
+		done: done ;
+		doneDate: doneDate;
+		dueDate: dueDate;
+		description: description;
 		save.
 ]
 
-{ #category : #initialization }
-MLSTodoTaskPresenter >> initializeDialogWindow: aDialogWindowPresenter [
-
-	aDialogWindowPresenter 
-		title: 'New task';
-		initialExtent: 350@120;
-		addButton: 'Accept' do: [ :dialog |
-			self accept.
-			dialog close ];
-		addButton: 'Cancel' do: [ :dialog |
-			dialog close ]
+{ #category : #accessing }
+MLSTodoTaskPresenter >> defaultLayout [ 
+	"MLSTodoTaskPresenter new open"
+	^ SpBoxLayout newTopToBottom
+			add: (SpBoxLayout newLeftToRight 
+						add: done; add: title; yourself );
+			add: (SpBoxLayout newLeftToRight 
+						add: 'dueDate'; add: dueDate; yourself );
+			add: (SpBoxLayout newLeftToRight 
+						add: 'dueDate'; add: doneDate; yourself );
+			add: description;
+			yourself 
 ]
 
-{ #category : #initialization }
-MLSTodoTaskPresenter >> initializePresenters [
+{ #category : #accessing }
+MLSTodoTaskPresenter >> initializePresenters [ 
+	
+	title := self newTextInput.
+	dueDate := self instantiate: SpDatePresenter.
+	doneDate := self instantiate: SpDatePresenter.
+	description := self newTextInput.
+	done := self newToggleButton 
 
-	titlePresenter := self newTextInput.
-	titlePresenter selectAll.
-
-	self layout: (SpBoxLayout newTopToBottom
-				add: titlePresenter expand: false;
-				yourself)
 ]
 
 { #category : #accessing }
 MLSTodoTaskPresenter >> task [
 
 	^ task
-]
-
-{ #category : #accessing }
-MLSTodoTaskPresenter >> task: aTask [
-
-	task := aTask.
-	self updatePresenter
-]
-
-{ #category : #initialization }
-MLSTodoTaskPresenter >> updatePresenter [
-
-	task ifNotNil: [  
-		titlePresenter text: (task title ifNil: [ '' ]) ]
 ]

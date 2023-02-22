@@ -22,7 +22,7 @@ MSLTodoListPresenter class >> open [
 { #category : #initialization }
 MSLTodoListPresenter >> addTask [
 
-	(MLSTodoTaskPresenter newApplication: self application) 
+	(MLSTodoTaskSimplePresenter newApplication: self application) 
 		task: MLSTodoTask new;
 		openModal.
 	self updatePresenter
@@ -43,7 +43,7 @@ MSLTodoListPresenter >> defaultLayout [
 { #category : #initialization }
 MSLTodoListPresenter >> editSelectedTask [
 
-	(MLSTodoTaskPresenter newApplication: self application)
+	(MLSTodoTaskSimplePresenter newApplication: self application)
 		task: todoListPresenter selection selectedItem;
 		openModal.
 	"I do not really like to flush all the items and get them all once again."

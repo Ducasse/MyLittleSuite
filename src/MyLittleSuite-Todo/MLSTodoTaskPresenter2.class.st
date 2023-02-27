@@ -2,7 +2,6 @@ Class {
 	#name : #MLSTodoTaskPresenter2,
 	#superclass : #SpPresenterWithModel,
 	#instVars : [
-		'task',
 		'title',
 		'dueDate',
 		'done',
@@ -42,32 +41,32 @@ MLSTodoTaskPresenter2 >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add: (SpGridLayout build: [ :builder |
 			builder
+				beColumnHomogeneous;
 				add: 'Done:';
 				add: doneCheckbox;
 				nextRow;
-				add: 'Onliner';
+				add: 'Onliner:';
 				add: nameTextInput;
 				nextRow;
 				add: 'Remember me:';
 				add: checkboxInput;
 				nextRow;
 				add: 'Due Date:';
-				add: dateInput;
+				add: dueDate;
 				nextRow;
 				add: 'Done Date:';
-				add: dateInput
-				]);
-		add: (SpGridLayout new
-				add: 'Description' at: 1 @ 1;
-		  		add: descriptionInput at: 1 @ 2 span: 2 @ 4;
-				yourself); 
-			
+				add: doneDate ;
+				nextRow;
+				add: 'Description:' ;
+				add: descriptionInput ]) ;
 		add: (SpBoxLayout newLeftToRight
 			add: submitButton;
 			add: restoreButton;
 			yourself)
-		expand: false;
+		expand: false	
+			;
 		yourself
+		
 ]
 
 { #category : #'model updates' }
@@ -96,6 +95,12 @@ MLSTodoTaskPresenter2 >> fillModelWithFormContent [
 		date: self dateInput date."
 ]
 
+{ #category : #'morphic ui' }
+MLSTodoTaskPresenter2 >> initialExtent [
+
+	^ 400@400
+]
+
 { #category : #initialization }
 MLSTodoTaskPresenter2 >> initializePresenters [ 
 
@@ -110,9 +115,10 @@ MLSTodoTaskPresenter2 >> initializePresenters [
 	doneCheckbox := self newCheckBox state: false.
 
 	dateLabel := self newLabel label: 'date:'.
-	dateInput := self instantiate: SpDatePresenter.
-	dateInput display: [ :item | item yyyymmdd ].
-	
+	dueDate := self instantiate: SpDatePresenter.
+	dueDate display: [ :item | item yyyymmdd ].
+	doneDate := self instantiate: SpDatePresenter.
+	doneDate display: [ :item | item yyyymmdd ].
 
 	submitButton := self newButton label: 'Submit'.
 	restoreButton := self newButton label: 'Restore'
@@ -138,6 +144,12 @@ MLSTodoTaskPresenter2 >> submit [
 	
 	self model: workingModel.
 	self announcingObject valueChanged
+]
+
+{ #category : #'morphic ui' }
+MLSTodoTaskPresenter2 >> title [
+
+	^ self model  title
 ]
 
 { #category : #initialization }

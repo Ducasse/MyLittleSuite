@@ -6,7 +6,7 @@ Class {
 		'emptyFilesystem',
 		'file'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-IO'
 }
 
 { #category : #initialization }
@@ -25,13 +25,6 @@ MLSTodoIOManagerTest >> setUp [
 	(filesystem workingDirectory / 'TodoFiles') ensureCreateDirectory.
 	self fillUpTasksStonFile
 	
-]
-
-{ #category : #initialization }
-MLSTodoIOManagerTest >> tasksStonFile [
-
-	^ (filesystem workingDirectory / 'TodoFiles' / 'tasks.ston')
-			
 ]
 
 { #category : #initialization }

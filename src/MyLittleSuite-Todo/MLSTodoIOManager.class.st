@@ -4,5 +4,5 @@ Class {
 	#instVars : [
 		'fileReference'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-IO'
 }

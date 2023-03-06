@@ -47,9 +47,15 @@ MlsTask class >> withNewDuring: aBlock [
 ]
 
 { #category : #saving }
+MlsTask >> db [ 
+
+	^ MlsTaskDB uniqueInstance
+]
+
+{ #category : #saving }
 MlsTask >> delete [
 
-	self class deleteTask: self
+	self db deleteTask: self
 ]
 
 { #category : #accessing }
@@ -125,7 +131,7 @@ MlsTask >> printOn: aStream [
 { #category : #saving }
 MlsTask >> save [
 
-	self class addTask: self
+	self db addTask: self
 ]
 
 { #category : #accessing }

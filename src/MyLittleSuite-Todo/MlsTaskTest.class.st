@@ -5,17 +5,37 @@ Class {
 }
 
 { #category : #tests }
-MlsTaskTest >> taskManager [
+MlsTaskTest >> taskClass [
 
 	^ MlsTask
+]
+
+{ #category : #tests }
+MlsTaskTest >> taskManager [
+
+	^ MlsTaskDB uniqueInstance
 ]
 
 { #category : #tests }
 MlsTaskTest >> testAddTaskIsInTheList [
 
 	self taskManager withNewDuring: [ 
-		self taskManager addTask: (self taskManager new title: 'first'; done: false; yourself).
+		self taskManager addTask: (self taskClass new title: 'first'; done: false; yourself).
 	 	self assert: self taskManager tasks first title equals: 'first'
+		]
+]
+
+{ #category : #tests }
+MlsTaskTest >> testRemoveTaskIsNotInTheListAnymore [
+
+	self taskManager withNewDuring: [ 
+		| toBeRemoved |
+		toBeRemoved := (self taskClass new title: 'third'; done: false; yourself).
+		self taskManager addTask: (self taskClass new title: 'first'; done: false; yourself).
+		self taskManager addTask: (self taskClass new title: 'second'; done: false; yourself).
+		self taskManager addTask: toBeRemoved.
+		self taskManager deleteTask: toBeRemoved.
+	 	self assert: self taskManager tasks size equals: 2
 		]
 ]
 
@@ -23,9 +43,9 @@ MlsTaskTest >> testAddTaskIsInTheList [
 MlsTaskTest >> testTasksContainsDone [
 
 	self taskManager withNewDuring: [ 
-		self taskManager addTask: (self taskManager new title: 'first'; done: false; yourself).
-		self taskManager addTask: (self taskManager new title: 'second'; done: true; yourself).
-		self taskManager addTask: (self taskManager new title: 'third'; done: false; yourself).
+		self taskManager addTask: (self taskClass new title: 'first'; done: false; yourself).
+		self taskManager addTask: (self taskClass new title: 'second'; done: true; yourself).
+		self taskManager addTask: (self taskClass new title: 'third'; done: false; yourself).
 	 	self assert: self taskManager tasks first title equals: 'first'.
 		self assert: (self taskManager tasks select: [ :t | t done ]) size equals: 1
 		]

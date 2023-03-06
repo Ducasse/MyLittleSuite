@@ -59,7 +59,7 @@ MlsIOManager >> save [
 	fileReference ensureCreateFile.
 	stream := fileReference writeStream. 
 	[
-	stream nextPutAll: (STON toStringPretty: MlsTask tasks).
+	stream nextPutAll: (STON toStringPretty: MlsTaskDB tasks).
 	stream flush
 		] ensure: [ stream close ].	
 	

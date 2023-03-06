@@ -12,12 +12,3 @@ MlsListPresenterTest >> tearDown [
 	presenter ifNotNil: [ presenter delete ].
 	super tearDown
 ]
-
-{ #category : #tests }
-MlsListPresenterTest >> testAddingATask [
-
-	
-	presenter := MlsTaskListPresenter new. 
-	presenter open.
-		
-]

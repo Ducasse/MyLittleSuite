@@ -29,6 +29,12 @@ MlsTaskListPresenter >> addTask [
 ]
 
 { #category : #initialization }
+MlsTaskListPresenter >> db [
+
+	^ MlsTaskDB uniqueInstance
+]
+
+{ #category : #initialization }
 MlsTaskListPresenter >> defaultLayout [ 
 	
 	^ (SpBoxLayout newTopToBottom 
@@ -103,5 +109,5 @@ MlsTaskListPresenter >> todoListContextMenu [
 
 { #category : #initialization }
 MlsTaskListPresenter >> updatePresenter [
-	todoListPresenter items: MlsTask tasks
+	todoListPresenter items: self db tasks
 ]

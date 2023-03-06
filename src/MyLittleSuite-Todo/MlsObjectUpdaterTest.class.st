@@ -1,14 +1,14 @@
 Class {
-	#name : #MlsTObjectUpdaterTest,
+	#name : #MlsObjectUpdaterTest,
 	#superclass : #TestCase,
 	#category : #'MyLittleSuite-Todo-Updater'
 }
 
 { #category : #tests }
-MlsTObjectUpdaterTest >> testMigrateChange [
+MlsObjectUpdaterTest >> testMigrateChange [
 
 	| updater toMigrate value1Before value2Before |
-	updater := MlsTObjectUpdater new. 
+	updater := MlsObjectUpdater new. 
 	toMigrate :=	 MlsObjectNoChange new.
 	toMigrate value1: 12.		
 	value1Before := toMigrate value1. 
@@ -20,10 +20,10 @@ MlsTObjectUpdaterTest >> testMigrateChange [
 ]
 
 { #category : #tests }
-MlsTObjectUpdaterTest >> testMigrateNoChange [
+MlsObjectUpdaterTest >> testMigrateNoChange [
 
 	| updater toMigrate value1Before value2Before |
-	updater := MlsTObjectUpdater new. 
+	updater := MlsObjectUpdater new. 
 	toMigrate :=	 MlsObjectNoChange new.
 	toMigrate value1: 12.
 	toMigrate value2: true.	
@@ -38,10 +38,10 @@ MlsTObjectUpdaterTest >> testMigrateNoChange [
 ]
 
 { #category : #tests }
-MlsTObjectUpdaterTest >> testMigrateRename [
+MlsObjectUpdaterTest >> testMigrateRename [
 
 	| updater toMigrate value1Before value2Before migrated |
-	updater := MlsTObjectUpdater new. 
+	updater := MlsObjectUpdater new. 
 	updater newClass: MlsObjectRenamedChange.
 		"I'm forced to specify a different class. In reality the class will have changed."
 	updater rename: { #value1 -> #value11 . #value2 -> #value22 }.

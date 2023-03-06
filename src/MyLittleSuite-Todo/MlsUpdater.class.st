@@ -1,5 +1,5 @@
 Class {
-	#name : #MlsTUpdater,
+	#name : #MlsUpdater,
 	#superclass : #Object,
 	#classVars : [
 		'Folder'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #migrate }
-MlsTUpdater >> folder [
+MlsUpdater >> folder [
 
 	Folder := (FileSystem workingDirectory / 'TodoFiles' ) asFileReference
 ]
 
 { #category : #migrate }
-MlsTUpdater >> migrate: anObject [ 
+MlsUpdater >> migrate: anObject [ 
 	
 	anObject class instVarNames
 		doWithIndex: [ :each :index |

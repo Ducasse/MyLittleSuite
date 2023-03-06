@@ -4,13 +4,13 @@ Imagine you get a ston object serialized and you load it back but the class got 
 This updater does not handle renamed fields because this should not be done at the object level (if the object has been created then this is too late). 
 "
 Class {
-	#name : #MlsTObjectUpdater,
+	#name : #MlsObjectUpdater,
 	#superclass : #Object,
 	#category : #'MyLittleSuite-Todo-Updater'
 }
 
 { #category : #migrate }
-MlsTObjectUpdater >> migrate: anObject [ 
+MlsObjectUpdater >> migrate: anObject [ 
 	
 	anObject class instVarNames
 		doWithIndex: [ :each :index |

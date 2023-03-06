@@ -1,15 +1,15 @@
 Class {
-	#name : #MLSTodoTaskSimplePresenter,
+	#name : #MlsTaskSimplePresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'task',
 		'titlePresenter'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #initialization }
-MLSTodoTaskSimplePresenter >> accept [
+MlsTaskSimplePresenter >> accept [
 
 	self task 
 		title: titlePresenter text;
@@ -17,7 +17,7 @@ MLSTodoTaskSimplePresenter >> accept [
 ]
 
 { #category : #initialization }
-MLSTodoTaskSimplePresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MlsTaskSimplePresenter >> initializeDialogWindow: aDialogWindowPresenter [
 
 	aDialogWindowPresenter 
 		title: 'New task';
@@ -30,7 +30,7 @@ MLSTodoTaskSimplePresenter >> initializeDialogWindow: aDialogWindowPresenter [
 ]
 
 { #category : #initialization }
-MLSTodoTaskSimplePresenter >> initializePresenters [
+MlsTaskSimplePresenter >> initializePresenters [
 
 	titlePresenter := self newTextInput.
 	titlePresenter selectAll.
@@ -41,20 +41,20 @@ MLSTodoTaskSimplePresenter >> initializePresenters [
 ]
 
 { #category : #accessing }
-MLSTodoTaskSimplePresenter >> task [
+MlsTaskSimplePresenter >> task [
 
 	^ task
 ]
 
 { #category : #accessing }
-MLSTodoTaskSimplePresenter >> task: aTask [
+MlsTaskSimplePresenter >> task: aTask [
 
 	task := aTask.
 	self updatePresenter
 ]
 
 { #category : #initialization }
-MLSTodoTaskSimplePresenter >> updatePresenter [
+MlsTaskSimplePresenter >> updatePresenter [
 
 	task ifNotNil: [  
 		titlePresenter text: (task title ifNil: [ '' ]) ]

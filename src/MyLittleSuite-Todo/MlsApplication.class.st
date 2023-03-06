@@ -2,20 +2,20 @@
 `TodoApplication new run`
 "
 Class {
-	#name : #MLSTodoApplication,
+	#name : #MlsApplication,
 	#superclass : #SpApplication,
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #running }
-MLSTodoApplication class >> run [
+MlsApplication class >> run [
 	"self run"
 	self new run
 ]
 
 { #category : #running }
-MLSTodoApplication >> start [
+MlsApplication >> start [
 	"self new run"
 	
-	MSLTodoListPresenter open
+	MlsTaskListPresenter open
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #MLSTodoTaskPresenter,
+	#name : #MlsTaskPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'task',
@@ -9,11 +9,11 @@ Class {
 		'doneDate',
 		'description'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #actions }
-MLSTodoTaskPresenter >> accept [
+MlsTaskPresenter >> accept [
 
 	self task 
 		title: title text;
@@ -25,7 +25,7 @@ MLSTodoTaskPresenter >> accept [
 ]
 
 { #category : #accessing }
-MLSTodoTaskPresenter >> defaultLayout [ 
+MlsTaskPresenter >> defaultLayout [ 
 	"MLSTodoTaskPresenter new open"
 	^ SpBoxLayout newTopToBottom
 			add: (SpBoxLayout newLeftToRight 
@@ -39,7 +39,7 @@ MLSTodoTaskPresenter >> defaultLayout [
 ]
 
 { #category : #accessing }
-MLSTodoTaskPresenter >> initializePresenters [ 
+MlsTaskPresenter >> initializePresenters [ 
 	
 	title := self newTextInput.
 	dueDate := self instantiate: SpDatePresenter.
@@ -50,7 +50,7 @@ MLSTodoTaskPresenter >> initializePresenters [
 ]
 
 { #category : #accessing }
-MLSTodoTaskPresenter >> task [
+MlsTaskPresenter >> task [
 
 	^ task
 ]

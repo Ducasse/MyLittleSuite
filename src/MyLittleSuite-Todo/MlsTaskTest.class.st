@@ -1,17 +1,17 @@
 Class {
-	#name : #MLSTodoTaskTest,
+	#name : #MlsTaskTest,
 	#superclass : #TestCase,
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-Model'
 }
 
 { #category : #tests }
-MLSTodoTaskTest >> taskManager [
+MlsTaskTest >> taskManager [
 
-	^ MLSTodoTask
+	^ MlsTask
 ]
 
 { #category : #tests }
-MLSTodoTaskTest >> testAddTaskIsInTheList [
+MlsTaskTest >> testAddTaskIsInTheList [
 
 	self taskManager withNewDuring: [ 
 		self taskManager addTask: (self taskManager new title: 'first'; done: false; yourself).
@@ -20,7 +20,7 @@ MLSTodoTaskTest >> testAddTaskIsInTheList [
 ]
 
 { #category : #tests }
-MLSTodoTaskTest >> testTasksContainsDone [
+MlsTaskTest >> testTasksContainsDone [
 
 	self taskManager withNewDuring: [ 
 		self taskManager addTask: (self taskManager new title: 'first'; done: false; yourself).

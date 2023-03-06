@@ -1,23 +1,23 @@
 Class {
-	#name : #MLSTodoListPresenterTest,
+	#name : #MlsListPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #tests }
-MLSTodoListPresenterTest >> tearDown [ 
+MlsListPresenterTest >> tearDown [ 
 	presenter ifNotNil: [ presenter delete ].
 	super tearDown
 ]
 
 { #category : #tests }
-MLSTodoListPresenterTest >> testAddingATask [
+MlsListPresenterTest >> testAddingATask [
 
 	
-	presenter := MSLTodoListPresenter new. 
+	presenter := MlsTaskListPresenter new. 
 	presenter open.
 		
 ]

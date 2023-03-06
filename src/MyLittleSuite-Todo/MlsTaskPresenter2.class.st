@@ -1,15 +1,11 @@
 Class {
-	#name : #MLSTodoTaskPresenter2,
+	#name : #MlsTaskPresenter2,
 	#superclass : #SpPresenterWithModel,
 	#instVars : [
-		'title',
 		'dueDate',
-		'done',
 		'doneDate',
-		'description',
 		'checkboxInput',
-		'dateLabel',
-		'dateInput',
+		'dueDateLabel',
 		'nameLabel',
 		'nameTextInput',
 		'workingModel',
@@ -18,25 +14,26 @@ Class {
 		'doneCheckbox',
 		'checkboxLabel',
 		'doneLabel',
-		'descriptionInput'
+		'descriptionInput',
+		'descriptionLabel'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #'instance creation' }
-MLSTodoTaskPresenter2 class >> open [
+MlsTaskPresenter2 class >> open [
 	<script>
-	(self on: MLSTodoTask new) open
+	(self on: MlsTask new) open
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> connectPresenters [
+MlsTaskPresenter2 >> connectPresenters [
 	submitButton action: [ self submit ].
 	restoreButton action: [ self restore ]
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> defaultLayout [
+MlsTaskPresenter2 >> defaultLayout [
 	
 	^ SpBoxLayout newTopToBottom
 		add: (SpGridLayout build: [ :builder |
@@ -70,7 +67,7 @@ MLSTodoTaskPresenter2 >> defaultLayout [
 ]
 
 { #category : #'model updates' }
-MLSTodoTaskPresenter2 >> fillFormWithWorkingModel [
+MlsTaskPresenter2 >> fillFormWithWorkingModel [
 	"| aModel |
 	aModel := self workingModel.
 	self nameTextInput text: aModel name.
@@ -84,7 +81,7 @@ MLSTodoTaskPresenter2 >> fillFormWithWorkingModel [
 ]
 
 { #category : #'model updates' }
-MLSTodoTaskPresenter2 >> fillModelWithFormContent [
+MlsTaskPresenter2 >> fillModelWithFormContent [
 
 	"self workingModel
 		name: self nameTextInput text;
@@ -96,27 +93,31 @@ MLSTodoTaskPresenter2 >> fillModelWithFormContent [
 ]
 
 { #category : #'morphic ui' }
-MLSTodoTaskPresenter2 >> initialExtent [
+MlsTaskPresenter2 >> initialExtent [
 
 	^ 400@400
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> initializePresenters [ 
+MlsTaskPresenter2 >> initializePresenters [ 
 
 	nameLabel := self newLabel label: 'Oneliner'.
 	nameTextInput := self newTextInput.
+	
+	descriptionLabel := self newLabel label: 'Description'.
 	descriptionInput := self newTextInput.
 	
 	checkboxLabel := self newLabel label: 'remember me'.
 	checkboxInput := self newCheckBox state: true.
 	
-	doneLabel := self newLabel label: 'Doner'.
+	doneLabel := self newLabel label: 'Done'.
 	doneCheckbox := self newCheckBox state: false.
 
-	dateLabel := self newLabel label: 'date:'.
+	dueDateLabel := self newLabel label: 'Due date'.
 	dueDate := self instantiate: SpDatePresenter.
 	dueDate display: [ :item | item yyyymmdd ].
+	
+	dueDateLabel := self newLabel label: 'Done date'.
 	doneDate := self instantiate: SpDatePresenter.
 	doneDate display: [ :item | item yyyymmdd ].
 
@@ -125,20 +126,20 @@ MLSTodoTaskPresenter2 >> initializePresenters [
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> modelChanged [
+MlsTaskPresenter2 >> modelChanged [
 
 	workingModel := self model copy.
 	self fillFormWithWorkingModel
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> restore [
+MlsTaskPresenter2 >> restore [
 
 	self modelChanged
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> submit [
+MlsTaskPresenter2 >> submit [
 
 	self fillModelWithFormContent.
 	
@@ -147,17 +148,17 @@ MLSTodoTaskPresenter2 >> submit [
 ]
 
 { #category : #'morphic ui' }
-MLSTodoTaskPresenter2 >> title [
+MlsTaskPresenter2 >> title [
 
 	^ self model  title
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> workingModel [
+MlsTaskPresenter2 >> workingModel [
 	^ workingModel
 ]
 
 { #category : #initialization }
-MLSTodoTaskPresenter2 >> workingModel: anObject [
+MlsTaskPresenter2 >> workingModel: anObject [
 	workingModel := anObject
 ]

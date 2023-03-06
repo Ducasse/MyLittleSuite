@@ -1,5 +1,5 @@
 Class {
-	#name : #MLSTodoTask,
+	#name : #MlsTask,
 	#superclass : #Object,
 	#instVars : [
 		'done',
@@ -8,33 +8,36 @@ Class {
 		'doneDate',
 		'dueDate'
 	],
+	#classVars : [
+		'UndeterminedDate'
+	],
 	#classInstVars : [
 		'tasks'
 	],
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-Model'
 }
 
 { #category : #'task management' }
-MLSTodoTask class >> addTask: aTask [
+MlsTask class >> addTask: aTask [
 	
 	(tasks includes: aTask)
 		ifFalse: [ tasks add: aTask ]
 ]
 
 { #category : #'task management' }
-MLSTodoTask class >> deleteTask: aTask [
+MlsTask class >> deleteTask: aTask [
 
 	tasks remove: aTask ifAbsent: [ nil ]
 ]
 
 { #category : #'task management' }
-MLSTodoTask class >> tasks [ 
+MlsTask class >> tasks [ 
 
 	^ tasks ifNil: [ tasks := OrderedCollection new]
 ]
 
 { #category : #'access protection' }
-MLSTodoTask class >> withNewDuring: aBlock [
+MlsTask class >> withNewDuring: aBlock [
 	"Make sure that we execute aBlock on a new singleton"
 	
 	| tmp |
@@ -44,61 +47,61 @@ MLSTodoTask class >> withNewDuring: aBlock [
 ]
 
 { #category : #saving }
-MLSTodoTask >> delete [
+MlsTask >> delete [
 
 	self class deleteTask: self
 ]
 
 { #category : #accessing }
-MLSTodoTask >> description [
+MlsTask >> description [
 
 	^ description
 ]
 
 { #category : #accessing }
-MLSTodoTask >> description: anObject [
+MlsTask >> description: anObject [
 
 	description := anObject
 ]
 
 { #category : #accessing }
-MLSTodoTask >> done [
+MlsTask >> done [
 
 	^ done
 ]
 
 { #category : #accessing }
-MLSTodoTask >> done: anObject [
+MlsTask >> done: anObject [
 
 	done := anObject
 ]
 
 { #category : #accessing }
-MLSTodoTask >> doneDate [
+MlsTask >> doneDate [
 
 	^ doneDate
 ]
 
 { #category : #accessing }
-MLSTodoTask >> doneDate: anObject [
+MlsTask >> doneDate: anObject [
 
 	doneDate := anObject
 ]
 
 { #category : #accessing }
-MLSTodoTask >> dueDate [
+MlsTask >> dueDate [
 
 	^ dueDate
 ]
 
 { #category : #accessing }
-MLSTodoTask >> dueDate: anObject [
+MlsTask >> dueDate: anObject [
 
 	dueDate := anObject
 ]
 
 { #category : #initialization }
-MLSTodoTask >> initialize [
+MlsTask >> initialize [
 
 	super initialize.
 	self done: false.
@@ -106,13 +109,13 @@ MLSTodoTask >> initialize [
 ]
 
 { #category : #testing }
-MLSTodoTask >> isDone [
+MlsTask >> isDone [
 
 	^ self done
 ]
 
 { #category : #printing }
-MLSTodoTask >> printOn: aStream [
+MlsTask >> printOn: aStream [
 
 	super printOn: aStream.
 	aStream space nextPutAll: self title.
@@ -120,19 +123,19 @@ MLSTodoTask >> printOn: aStream [
 ]
 
 { #category : #saving }
-MLSTodoTask >> save [
+MlsTask >> save [
 
 	self class addTask: self
 ]
 
 { #category : #accessing }
-MLSTodoTask >> title [
+MlsTask >> title [
 
 	^ title
 ]
 
 { #category : #accessing }
-MLSTodoTask >> title: anObject [
+MlsTask >> title: anObject [
 
 	title := anObject
 ]

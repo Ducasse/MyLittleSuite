@@ -1,5 +1,5 @@
 Class {
-	#name : #MLSTodoIOManagerTest,
+	#name : #MlsIOManagerTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #initialization }
-MLSTodoIOManagerTest >> fillUpTasksStonFile [
+MlsIOManagerTest >> fillUpTasksStonFile [
 	
 	^ (filesystem workingDirectory / 'TodoFiles' / 'tasks.ston')
 			writeStreamDo: [ :stream | stream nextPutAll: self tasksStonFileContents ];
@@ -18,7 +18,7 @@ MLSTodoIOManagerTest >> fillUpTasksStonFile [
 ]
 
 { #category : #initialization }
-MLSTodoIOManagerTest >> setUp [
+MlsIOManagerTest >> setUp [
 	
 	super setUp.
 	filesystem := FileSystem memory.
@@ -28,7 +28,7 @@ MLSTodoIOManagerTest >> setUp [
 ]
 
 { #category : #initialization }
-MLSTodoIOManagerTest >> tasksStonFileContents [
+MlsIOManagerTest >> tasksStonFileContents [
 	"STON toStringPretty: MLSTodoTask tasks"
 	^  'OrderedCollection [
 	MLSTodoTask {
@@ -87,7 +87,7 @@ MLSTodoIOManagerTest >> tasksStonFileContents [
 ]
 
 { #category : #tests }
-MLSTodoIOManagerTest >> testAssertFilesAreThere [
+MlsIOManagerTest >> testAssertFilesAreThere [
 
 	self assert: (filesystem / 'TodoFiles') isDirectory.
 	self assert:  (filesystem / 'TodoFiles' / 'tasks.ston') isFile.
@@ -95,10 +95,10 @@ MLSTodoIOManagerTest >> testAssertFilesAreThere [
 ]
 
 { #category : #tests }
-MLSTodoIOManagerTest >> testStonToObjects [
+MlsIOManagerTest >> testStonToObjects [
 
 	| objects |
 	objects := STON fromString: self tasksStonFile contents.
 	self assert: objects size equals: 13.
-	self assert: objects first class equals: MLSTodoTask 
+	self assert: objects first class equals: MlsTask 
 ]

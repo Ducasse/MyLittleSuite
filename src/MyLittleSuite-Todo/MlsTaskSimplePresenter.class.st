@@ -13,7 +13,7 @@ MlsTaskSimplePresenter >> accept [
 
 	self task 
 		title: titlePresenter text;
-		save.
+		declareTask.
 ]
 
 { #category : #initialization }

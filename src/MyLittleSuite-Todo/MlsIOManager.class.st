@@ -20,7 +20,13 @@ MlsIOManager class >> createFolder [
 { #category : #installation }
 MlsIOManager class >> folder [
 
-	Folder := (FileSystem workingDirectory / 'TodoFiles' ) asFileReference
+	^ Folder ifNil: [(FileSystem workingDirectory / 'TodoFiles' ) asFileReference ]
+]
+
+{ #category : #installation }
+MlsIOManager class >> initialize [
+
+	self install
 ]
 
 { #category : #installation }
@@ -29,20 +35,37 @@ MlsIOManager class >> install [
 	self folder exists 
 		ifFalse: [ self createFolder ].
 	self mainFile exists
-		ifTrue: [ self loadTasks ]
+		ifTrue: [ 
+			"here we should pay attention because the image 
+			may be older than the file so we should check the freshId."
+			self loadTasks ]
 		ifFalse: [ self saveTasks ]
+]
+
+{ #category : #installation }
+MlsIOManager class >> loadTasks [
+
+	| taskDB | 
+	taskDB := STON fromStream: self mainFile readStream.
+	taskDB freshId > MlsTaskDB uniqueInstance freshId 
+		ifTrue: [ MlsTaskDB uniqueInstance: taskDB ]
+		ifFalse: [  self inform: 'File is older than current' ]
 ]
 
 { #category : #installation }
 MlsIOManager class >> mainFile [
 
-	MainFile := self folder / 'Tasks.ston'	
+	^ MainFile ifNil: [ MainFile := self folder / 'Tasks.ston'	 ]
 ]
 
 { #category : #installation }
 MlsIOManager class >> saveTasks [
-
-	self halt
+	"self saveTasks"
+	
+	| stream |
+	stream := self mainFile writeStream. 
+	[ stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance).
+	stream flush ] ensure: [ stream close ]	
 ]
 
 { #category : #'as yet unclassified' }

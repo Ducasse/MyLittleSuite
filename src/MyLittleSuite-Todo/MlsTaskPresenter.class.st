@@ -21,7 +21,7 @@ MlsTaskPresenter >> accept [
 		doneDate: doneDate;
 		dueDate: dueDate;
 		description: description;
-		save.
+		declareTask.
 ]
 
 { #category : #accessing }

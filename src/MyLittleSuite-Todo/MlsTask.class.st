@@ -17,39 +17,16 @@ Class {
 	#category : #'MyLittleSuite-Todo-Model'
 }
 
-{ #category : #'task management' }
-MlsTask class >> addTask: aTask [
-	
-	(tasks includes: aTask)
-		ifFalse: [ tasks add: aTask ]
-]
-
-{ #category : #'task management' }
-MlsTask class >> deleteTask: aTask [
-
-	tasks remove: aTask ifAbsent: [ nil ]
-]
-
-{ #category : #'task management' }
-MlsTask class >> tasks [ 
-
-	^ tasks ifNil: [ tasks := OrderedCollection new]
-]
-
-{ #category : #'access protection' }
-MlsTask class >> withNewDuring: aBlock [
-	"Make sure that we execute aBlock on a new singleton"
-	
-	| tmp |
-	[ tmp := self tasks.
-	tasks := OrderedCollection new.
-	aBlock value ] ensure: [ tasks := tmp ]
-]
-
 { #category : #saving }
 MlsTask >> db [ 
 
 	^ MlsTaskDB uniqueInstance
+]
+
+{ #category : #saving }
+MlsTask >> declareTask [
+
+	self db addTask: self
 ]
 
 { #category : #saving }
@@ -126,12 +103,6 @@ MlsTask >> printOn: aStream [
 	super printOn: aStream.
 	aStream space nextPutAll: self title.
 	done ifTrue: [ aStream space nextPutAll: 'done' ]
-]
-
-{ #category : #saving }
-MlsTask >> save [
-
-	self db addTask: self
 ]
 
 { #category : #accessing }

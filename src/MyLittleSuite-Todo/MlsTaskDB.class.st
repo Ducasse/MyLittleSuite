@@ -23,24 +23,45 @@ MlsTaskDB class >> uniqueInstance [
 	^ UniqueInstance ifNil: [ UniqueInstance := self new ]
 ]
 
-{ #category : #adding }
+{ #category : #'instance creation' }
+MlsTaskDB class >> uniqueInstance: aDB [
+
+	UniqueInstance := aDB
+]
+
+{ #category : #'add/remove' }
 MlsTaskDB >> addTask: aTask [
 	
 	(tasks includes: aTask)
-		ifFalse: [ tasks add: aTask ]
+		ifFalse: [ tasks add: aTask. self incrementFreshId ]
 ]
 
-{ #category : #'task management' }
+{ #category : #'add/remove' }
 MlsTaskDB >> deleteTask: aTask [
 
-	tasks remove: aTask ifAbsent: [ nil ]
+	tasks remove: aTask ifAbsent: [ nil ].
+	"if we remove something that does not exist we could avoid to increment the freshId"
+	self incrementFreshId.
 ]
 
 { #category : #accessing }
+MlsTaskDB >> freshId [
+
+	^ freshId
+]
+
+{ #category : #'add/remove' }
+MlsTaskDB >> incrementFreshId [
+
+	freshId := freshId + 1
+]
+
+{ #category : #initialization }
 MlsTaskDB >> initialize [
 	
 	super initialize.
-	self setTasks: OrderedCollection new
+	self setTasks: OrderedCollection new.
+	freshId := 1
 ]
 
 { #category : #accessing }

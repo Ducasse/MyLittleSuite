@@ -40,6 +40,16 @@ MlsTaskTest >> testRemoveTaskIsNotInTheListAnymore [
 ]
 
 { #category : #tests }
+MlsTaskTest >> testSetDoneDateWhenDoneIsSet [
+	
+	| t |
+	t := self taskClass new title: 'first'; done: false; yourself.
+	self assert: t doneDate isNil.
+	t done: true.
+	self assert: t doneDate class equals: Date
+]
+
+{ #category : #tests }
 MlsTaskTest >> testTasksContainsDone [
 
 	self taskManager withNewDuring: [ 

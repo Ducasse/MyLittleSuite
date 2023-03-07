@@ -54,9 +54,10 @@ MlsTask >> done [
 ]
 
 { #category : #accessing }
-MlsTask >> done: anObject [
+MlsTask >> done: aBoolean [
 
-	done := anObject
+	done := aBoolean.
+	aBoolean ifTrue: [ self doneDate: Date today ]
 ]
 
 { #category : #accessing }
@@ -100,9 +101,9 @@ MlsTask >> isDone [
 { #category : #printing }
 MlsTask >> printOn: aStream [
 
-	super printOn: aStream.
+	aStream nextPutAll: 'Task'.
 	aStream space nextPutAll: self title.
-	done ifTrue: [ aStream space nextPutAll: 'done' ]
+	done ifTrue: [ aStream space nextPutAll: '[done]' ]
 ]
 
 { #category : #accessing }

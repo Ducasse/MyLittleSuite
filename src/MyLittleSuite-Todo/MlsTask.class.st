@@ -6,7 +6,8 @@ Class {
 		'title',
 		'description',
 		'doneDate',
-		'dueDate'
+		'dueDate',
+		'isPending'
 	],
 	#classVars : [
 		'UndeterminedDate'
@@ -98,12 +99,28 @@ MlsTask >> isDone [
 	^ self done
 ]
 
+{ #category : #accessing }
+MlsTask >> isPending [
+	"a pending task is one that is not done yet but got started"
+	
+	^ isPending
+]
+
 { #category : #printing }
 MlsTask >> printOn: aStream [
 
 	aStream nextPutAll: 'Task'.
 	aStream space nextPutAll: self title.
 	done ifTrue: [ aStream space nextPutAll: '[done]' ]
+]
+
+{ #category : #accessing }
+MlsTask >> setAsPending [
+	"a pending task is one that is not done yet but got started.
+	In the future we should certainly unified done and pending into a kind of more 
+	powerful state"
+	
+	isPending := true
 ]
 
 { #category : #accessing }

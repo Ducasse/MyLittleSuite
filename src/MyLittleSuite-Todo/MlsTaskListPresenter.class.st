@@ -19,7 +19,7 @@ MlsTaskListPresenter class >> open [
 	self new open
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MlsTaskListPresenter >> addTask [
 
 	(MlsTaskSimplePresenter newApplication: self application) 
@@ -34,7 +34,7 @@ MlsTaskListPresenter >> db [
 	^ MlsTaskDB uniqueInstance
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MlsTaskListPresenter >> defaultLayout [ 
 	
 	^ (SpBoxLayout newTopToBottom 
@@ -46,7 +46,7 @@ MlsTaskListPresenter >> defaultLayout [
 		yourself)
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MlsTaskListPresenter >> editSelectedTask [
 
 	(MlsTaskSimplePresenter newApplication: self application)
@@ -88,14 +88,14 @@ MlsTaskListPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 500@500
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MlsTaskListPresenter >> removeSelectedTask [
 
 	todoListPresenter selection selectedItem delete.
 	self updatePresenter
 ]
 
-{ #category : #initialization }
+{ #category : #menu }
 MlsTaskListPresenter >> todoListContextMenu [
 
 	^ self newMenu 
@@ -107,7 +107,7 @@ MlsTaskListPresenter >> todoListContextMenu [
 						action: [ self removeSelectedTask ] ]
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MlsTaskListPresenter >> updatePresenter [
 	todoListPresenter items: self db tasks
 ]

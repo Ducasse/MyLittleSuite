@@ -1,3 +1,8 @@
+"
+the freshid is to prevent that we hack the file and that when we load the file, the in image database loses information that got added since the file was saved. 
+
+Now this is unclear that it is useful in practice. 
+"
 Class {
 	#name : #MlsTaskDB,
 	#superclass : #Object,

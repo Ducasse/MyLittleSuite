@@ -5,8 +5,7 @@ Class {
 		'fileReference'
 	],
 	#classVars : [
-		'Folder',
-		'MainFile'
+		'Folder'
 	],
 	#category : #'MyLittleSuite-Todo-IO'
 }
@@ -20,7 +19,7 @@ MlsIOManager class >> createFolder [
 { #category : #installation }
 MlsIOManager class >> folder [
 
-	^ Folder ifNil: [(FileSystem workingDirectory / 'TodoFiles' ) asFileReference ]
+	^ Folder ifNil: [(FileSystem workingDirectory / 'TodoFiles/' ) resolve ]
 ]
 
 { #category : #installation }
@@ -44,18 +43,20 @@ MlsIOManager class >> install [
 
 { #category : #installation }
 MlsIOManager class >> loadTasks [
-
+	"self loadTasks"
+	
 	| taskDB | 
 	taskDB := STON fromStream: self mainFile readStream.
-	taskDB freshId > MlsTaskDB uniqueInstance freshId 
+	taskDB freshId >= MlsTaskDB uniqueInstance freshId 
 		ifTrue: [ MlsTaskDB uniqueInstance: taskDB ]
 		ifFalse: [  self inform: 'File is older than current' ]
 ]
 
 { #category : #installation }
 MlsIOManager class >> mainFile [
+	"self mainFile nextVersion"
 
-	^ MainFile ifNil: [ MainFile := self folder / 'Tasks.ston'	 ]
+	^  self folder resolve: (self folder lastFileFor: 'tasks' extension: 'ston') 
 ]
 
 { #category : #installation }
@@ -63,7 +64,7 @@ MlsIOManager class >> saveTasks [
 	"self saveTasks"
 	
 	| stream |
-	stream := self mainFile writeStream. 
+	stream := self mainFile nextVersion writeStream. 
 	[ stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance).
 	stream flush ] ensure: [ stream close ]	
 ]
@@ -73,19 +74,20 @@ MlsIOManager >> folder [
 	^ self class folder
 ]
 
+{ #category : #actions }
+MlsIOManager >> load [
+	"self new save"
+	
+	self class loadTasks
+	
+
+]
+
 { #category : #'as yet unclassified' }
 MlsIOManager >> save [
 	"self new save"
 	
-	| stream | 
-	fileReference := FileSystem workingDirectory / 'TodoFiles' / 'tasks.ston'.
-	fileReference ensureCreateFile.
-	stream := fileReference writeStream. 
-	[
-	stream nextPutAll: (STON toStringPretty: MlsTaskDB tasks).
-	stream flush
-		] ensure: [ stream close ].	
-	
+	self class saveTasks
 	
 
 ]

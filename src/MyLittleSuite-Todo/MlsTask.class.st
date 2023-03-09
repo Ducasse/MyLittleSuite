@@ -45,7 +45,8 @@ MlsTask >> description [
 { #category : #accessing }
 MlsTask >> description: anObject [
 
-	description := anObject
+	description := anObject.
+	self incrementFreshId
 ]
 
 { #category : #accessing }
@@ -59,6 +60,7 @@ MlsTask >> done: aBoolean [
 
 	done := aBoolean.
 	aBoolean ifTrue: [ self doneDate: Date today ]
+	
 ]
 
 { #category : #accessing }
@@ -82,7 +84,8 @@ MlsTask >> dueDate [
 { #category : #accessing }
 MlsTask >> dueDate: anObject [
 
-	dueDate := anObject
+	dueDate := anObject.
+	
 ]
 
 { #category : #initialization }
@@ -132,5 +135,6 @@ MlsTask >> title [
 { #category : #accessing }
 MlsTask >> title: anObject [
 
-	title := anObject
+	title := anObject.
+	
 ]

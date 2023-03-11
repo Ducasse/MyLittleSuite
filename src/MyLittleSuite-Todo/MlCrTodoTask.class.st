@@ -103,7 +103,7 @@ MlCrTodoTask >> archiveIfDoneAfterDays: daysNumber [
 
 	self isArchived ifTrue: [ ^ self ].
 	self isDone ifFalse: [ ^ self ].
-	(self doneDate < (ZTimestamp now - daysNumber days)) ifFalse: [ ^ self ].
+	(self doneDate < (Time now - daysNumber days)) ifFalse: [ ^ self ].
 	
 	self archived: true.
 	self focus: false.
@@ -140,7 +140,7 @@ MlCrTodoTask >> collectTagsOn: aString [
 MlCrTodoTask >> done: aBoolean [
 
 	doneDate := aBoolean 
-		ifTrue: [ ZTimestamp now ]
+		ifTrue: [ Time now ]
 		ifFalse: [ nil ]
 ]
 
@@ -242,12 +242,6 @@ MlCrTodoTask >> owner: aTodoList [
 	owner := aTodoList
 ]
 
-{ #category : #accessing }
-MlCrTodoTask >> pomodoroName [
-
-	^ self name
-]
-
 { #category : #printing }
 MlCrTodoTask >> printChangeLogLines: aString on: stream [
 
@@ -285,7 +279,7 @@ MlCrTodoTask >> printCronoTimeLines: aString time: aBoolean on: stream [
 	
 	separator := String new: 6 withAll: Character space.
 	time :=  (aBoolean and: [ self doneDate notNil ]) 
-		ifTrue: [ self doneDate asTime logPrintTime, ' ' ]
+		ifTrue: [ self doneDate asTime printString, ' ' ]
 		ifFalse: [ separator ].	
 			
 	(aString withNoLineLongerThan: 94) lines 

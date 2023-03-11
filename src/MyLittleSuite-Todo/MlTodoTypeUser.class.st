@@ -1,5 +1,5 @@
 "
-I'm a list type user.
+I represent a type of list created by the user.
 "
 Class {
 	#name : #MlTodoTypeUser,

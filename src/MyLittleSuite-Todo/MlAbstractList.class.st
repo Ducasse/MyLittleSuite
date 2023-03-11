@@ -5,7 +5,7 @@ My childrne define whether this is a real list or a virtual, but in any case I h
 Class {
 	#name : #MlAbstractList,
 	#superclass : #Object,
-	#category : #'MyLittleSuite-Todo-Crono'
+	#category : #'MyLittleSuite-Todo'
 }
 
 { #category : #visiting }

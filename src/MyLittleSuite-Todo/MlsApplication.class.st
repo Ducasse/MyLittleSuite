@@ -17,5 +17,5 @@ MlsApplication class >> run [
 MlsApplication >> start [
 	"self new run"
 	
-	MlsTaskListPresenter open
+	MlsSimpleTaskListPresenter open
 ]

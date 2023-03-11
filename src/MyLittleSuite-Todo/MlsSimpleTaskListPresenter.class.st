@@ -4,7 +4,7 @@ TodoApplication new run.
 ```
 "
 Class {
-	#name : #MlsTaskListPresenter,
+	#name : #MlsSimpleTaskListPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'todoListPresenter',
@@ -14,13 +14,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-MlsTaskListPresenter class >> open [ 
+MlsSimpleTaskListPresenter class >> open [ 
 	<script>
 	self new open
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> addTask [
+MlsSimpleTaskListPresenter >> addTask [
 
 	(MlsTaskSimplePresenter newApplication: self application) 
 		task: MlsTask new;
@@ -29,13 +29,13 @@ MlsTaskListPresenter >> addTask [
 ]
 
 { #category : #initialization }
-MlsTaskListPresenter >> db [
+MlsSimpleTaskListPresenter >> db [
 
 	^ MlsTaskDB uniqueInstance
 ]
 
 { #category : #layout }
-MlsTaskListPresenter >> defaultLayout [ 
+MlsSimpleTaskListPresenter >> defaultLayout [ 
 	
 	^ (SpBoxLayout newTopToBottom 
 		add: todoListPresenter;
@@ -47,7 +47,7 @@ MlsTaskListPresenter >> defaultLayout [
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> editSelectedTask [
+MlsSimpleTaskListPresenter >> editSelectedTask [
 
 	(MlsTaskSimplePresenter newApplication: self application)
 		task: todoListPresenter selection selectedItem;
@@ -57,7 +57,7 @@ MlsTaskListPresenter >> editSelectedTask [
 ]
 
 { #category : #initialization }
-MlsTaskListPresenter >> initializePresenters [
+MlsSimpleTaskListPresenter >> initializePresenters [
 
 	todoListPresenter := self newTable
 		                     addColumn:
@@ -81,7 +81,7 @@ MlsTaskListPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MlsTaskListPresenter >> initializeWindow: aWindowPresenter [
+MlsSimpleTaskListPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter 
 		title: 'Todo List';
@@ -89,14 +89,14 @@ MlsTaskListPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> removeSelectedTask [
+MlsSimpleTaskListPresenter >> removeSelectedTask [
 
 	todoListPresenter selection selectedItem delete.
 	self updatePresenter
 ]
 
 { #category : #menu }
-MlsTaskListPresenter >> todoListContextMenu [
+MlsSimpleTaskListPresenter >> todoListContextMenu [
 
 	^ self newMenu 
 		addItem: [ :item | item 
@@ -108,6 +108,6 @@ MlsTaskListPresenter >> todoListContextMenu [
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> updatePresenter [
+MlsSimpleTaskListPresenter >> updatePresenter [
 	todoListPresenter items: self db tasks
 ]

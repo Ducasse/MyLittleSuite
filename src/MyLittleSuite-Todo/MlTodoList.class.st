@@ -146,6 +146,13 @@ MlTodoList >> accept: aVisitor [
 	^ aVisitor visitTodoList: self
 ]
 
+{ #category : #actions }
+MlTodoList >> addAndSaveTask: aTask [
+
+	self addTask: aTask.
+	self save
+]
+
 { #category : #accessing }
 MlTodoList >> addTask: aTask [
 
@@ -251,7 +258,7 @@ MlTodoList >> receiveTask: aTask from: aTodoList [
 			removeTask: aTask 
 			follow: false.
 		"add the task as a regular task"
-		self saveTask: aTask.
+		self addAndSaveTask: aTask.
 		"ensure task is saved with changes"
 		aTask save
 		
@@ -295,13 +302,6 @@ MlTodoList >> removeTask: aTask follow: follow [
 { #category : #persistence }
 MlTodoList >> save [
 	self flag: #todo.
-]
-
-{ #category : #actions }
-MlTodoList >> saveTask: aTask [
-
-	self addTask: aTask.
-	self save
 ]
 
 { #category : #private }

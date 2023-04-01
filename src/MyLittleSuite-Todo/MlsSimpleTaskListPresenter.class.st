@@ -8,7 +8,8 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'todoListPresenter',
-		'addButton'
+		'addButton',
+		'saveButton'
 	],
 	#category : #'MyLittleSuite-Todo-UI'
 }
@@ -41,7 +42,9 @@ MlsSimpleTaskListPresenter >> defaultLayout [
 		add: todoListPresenter;
 		add: (SpBoxLayout newLeftToRight
 				addLast: addButton expand: false;
+				addLast: saveButton expand: false;
 				yourself) 
+		
 		expand: false;
 		yourself)
 ]
@@ -73,10 +76,16 @@ MlsSimpleTaskListPresenter >> initializePresenters [
 			                      evaluated: [ :task | task title ]);	
 		                     yourself.
 	todoListPresenter contextMenu: self todoListContextMenu.
-	
+	"todoListPresenter 
+		searchMatching: [  ]."
+		
 	addButton := self newButton
 		             label: 'Add task';
 		             action: [ self addTask ];
+		             yourself.
+	saveButton := self newButton
+		             label: 'Save';
+		             action: [ self save ];
 		             yourself
 ]
 
@@ -95,6 +104,12 @@ MlsSimpleTaskListPresenter >> removeSelectedTask [
 	self updatePresenter
 ]
 
+{ #category : #actions }
+MlsSimpleTaskListPresenter >> save [
+
+	MlsIOManager saveTasks
+]
+
 { #category : #menu }
 MlsSimpleTaskListPresenter >> todoListContextMenu [
 
@@ -109,5 +124,8 @@ MlsSimpleTaskListPresenter >> todoListContextMenu [
 
 { #category : #actions }
 MlsSimpleTaskListPresenter >> updatePresenter [
-	todoListPresenter items: self db tasks
+	| items |
+	items := self db tasks.
+	todoListPresenter items: items.
+	todoListPresenter selectItem: items last.
 ]

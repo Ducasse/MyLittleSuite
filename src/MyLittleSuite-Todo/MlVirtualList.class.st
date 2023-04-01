@@ -36,6 +36,13 @@ MlVirtualList >> accept: aVisitor [
 	^ aVisitor visitVirtualList: self
 ]
 
+{ #category : #actions }
+MlVirtualList >> addAndSaveTask: aTask [ 
+	"Adding a task here is in fact adding it to unsorted"
+	
+	^ self listForAddTask addAndSaveTask: aTask. 
+]
+
 { #category : #testing }
 MlVirtualList >> isVirtual [
 
@@ -67,11 +74,4 @@ MlVirtualList >> removeTask: aTask follow: follow [
 	aTask owner
 		removeTask: aTask 
 		follow: follow.
-]
-
-{ #category : #actions }
-MlVirtualList >> saveTask: aTask [ 
-	"Adding a task here is in fact adding it to unsorted"
-	
-	^ self listForAddTask saveTask: aTask. 
 ]

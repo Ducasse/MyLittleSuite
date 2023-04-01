@@ -5,13 +5,19 @@ My childrne define whether this is a real list or a virtual, but in any case I h
 Class {
 	#name : #MlAbstractList,
 	#superclass : #Object,
-	#category : #'MyLittleSuite-Todo'
+	#category : #'MyLittleSuite-Todo-Crono'
 }
 
 { #category : #visiting }
 MlAbstractList >> accept: aVisitor [
 
 	^ aVisitor visitGenericList: self
+]
+
+{ #category : #actions }
+MlAbstractList >> addAndSaveTask: aTask [ 
+
+	self subclassResponsibility
 ]
 
 { #category : #actions }
@@ -103,12 +109,6 @@ MlAbstractList >> pendingTasks [
 MlAbstractList >> pendingTasksSize [
 
 	^ self pendingTasks size
-]
-
-{ #category : #actions }
-MlAbstractList >> saveTask: aTask [ 
-
-	self subclassResponsibility
 ]
 
 { #category : #testing }

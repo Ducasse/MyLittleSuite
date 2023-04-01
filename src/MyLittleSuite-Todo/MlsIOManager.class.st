@@ -69,7 +69,7 @@ MlsIOManager class >> saveTasks [
 	stream flush ] ensure: [ stream close ]	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MlsIOManager >> folder [
 	^ self class folder
 ]
@@ -83,7 +83,7 @@ MlsIOManager >> load [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MlsIOManager >> save [
 	"self new save"
 	

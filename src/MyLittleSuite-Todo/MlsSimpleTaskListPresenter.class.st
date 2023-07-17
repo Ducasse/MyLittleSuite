@@ -127,6 +127,7 @@ MlsSimpleTaskListPresenter >> updatePresenter [
 	| items |
 	items := self db tasks.
 	todoListPresenter items: items.
-	todoListPresenter selectItem: items last.
+	items ifNotEmpty: [  
+		todoListPresenter selectItem: items last ]
 
 ]

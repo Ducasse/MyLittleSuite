@@ -1,5 +1,5 @@
 "
-`TodoApplication new run`
+`MlsApplication new run`
 "
 Class {
 	#name : #MlsApplication,
@@ -15,7 +15,7 @@ MlsApplication class >> run [
 
 { #category : #running }
 MlsApplication >> start [
-	"self new run"
-	
-	MlsSimpleTaskListPresenter open
+		
+	MlsSimpleTaskListPresenter open.
+
 ]

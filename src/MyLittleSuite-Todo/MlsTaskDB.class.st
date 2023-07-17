@@ -16,6 +16,12 @@ Class {
 	#category : #'MyLittleSuite-Todo-Model'
 }
 
+{ #category : #initialization }
+MlsTaskDB class >> reset [ 
+	<script>
+	^ UniqueInstance := nil
+]
+
 { #category : #'instance creation' }
 MlsTaskDB class >> tasks [ 
 

@@ -6,7 +6,7 @@ Class {
 		'emptyFilesystem',
 		'file'
 	],
-	#category : #'MyLittleSuite-Todo-IO'
+	#category : #'MyLittleSuite-Todo-Model'
 }
 
 { #category : #initialization }

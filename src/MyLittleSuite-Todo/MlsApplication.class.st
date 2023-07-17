@@ -16,6 +16,7 @@ MlsApplication class >> run [
 { #category : #running }
 MlsApplication >> start [
 		
-	MlsSimpleTaskListPresenter open.
+	MlsSimpleTaskListPresenter new
+		application: self ; open.
 
 ]

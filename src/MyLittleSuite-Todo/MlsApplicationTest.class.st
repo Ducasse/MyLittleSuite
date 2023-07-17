@@ -22,8 +22,7 @@ MlsApplicationTest >> systemWindows [
 { #category : #tests }
 MlsApplicationTest >> tearDown [
 
-	application ifNotNil: [ application closeAllWindows.
-			self closeWindows ].
+	application ifNotNil: [ application closeAllWindows ].
 	super tearDown
 ]
 

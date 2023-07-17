@@ -128,4 +128,5 @@ MlsSimpleTaskListPresenter >> updatePresenter [
 	items := self db tasks.
 	todoListPresenter items: items.
 	todoListPresenter selectItem: items last.
+
 ]

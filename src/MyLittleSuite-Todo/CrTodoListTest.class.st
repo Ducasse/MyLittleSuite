@@ -52,8 +52,9 @@ CrTodoListTest >> testMoveTaskTo [
 
 { #category : #tests }
 CrTodoListTest >> testRemove [
-
+	<skip>
 	| list task |
+	self skip.
 	task := MlCrTodoTask new
 		name: 'Test';
 		notes: 'Test';

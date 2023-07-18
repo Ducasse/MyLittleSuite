@@ -1,8 +1,6 @@
 "
-I'm a user defined lists. 
-Of course, this is the most important list we can have since is the one that keep usert tasks.
-
-
+I represent lists created by the user.
+The system lists such as focus, search or archive are subclasses of VirtualList.
 "
 Class {
 	#name : #MlTodoList,
@@ -14,19 +12,28 @@ Class {
 		'tasks',
 		'archived'
 	],
+	#classInstVars : [
+		'lists'
+	],
 	#category : #'MyLittleSuite-Todo-Crono'
 }
 
-{ #category : #accessing }
+{ #category : #'list accessing' }
 MlTodoList class >> activeLists [
 	
 	^ self allLists reject: [ :each | each isArchived ]
 ]
 
-{ #category : #accessing }
+{ #category : #'list accessing' }
 MlTodoList class >> allLists [
 	
-	^ self baseLists, self userLists
+	^ self systemLists, self userLists
+]
+
+{ #category : #accessing }
+MlTodoList class >> allListsOfType: aString [
+	
+	^ self allLists select: [ :each | each type = aString ]
 ]
 
 { #category : #accessing }
@@ -38,29 +45,33 @@ MlTodoList class >> archivedLists [
 { #category : #accessing }
 MlTodoList class >> baseLists [
 
-	^ MlApplication defaultApplication  
-		propertyAt: #baseLists 
-		ifAbsentPut: [ { self inbox . self focus . self unsorted . self life } ]
+	^ self systemLists
 ]
 
-{ #category : #accessing }
+{ #category : #'system lists' }
 MlTodoList class >> focus [
 
 	^ MlFocusList uniqueInstance
 ]
 
-{ #category : #accessing }
+{ #category : #'system lists' }
 MlTodoList class >> inbox [
 
 	^ MlApplication defaultApplication 
 		propertyAt: #inbox 
-		ifAbsentPut: [ self selectOne: [ :each | each type = MlTodoType inbox typeName ] ]
+		ifAbsentPut: [ self allListsOfType: MlTodoType inbox typeName ]
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
+MlTodoList class >> initialize [ 
+	
+	lists := Dictionary new. 
+]
+
+{ #category : #'system lists' }
 MlTodoList class >> life [
 
-	^ self selectOne: [ :each | each type = MlTodoType life typeName ]
+	^ self allListsOfType: MlTodoType life typeName
 ]
 
 { #category : #accessing }
@@ -72,17 +83,7 @@ MlTodoList class >> listNamed: aString [
 { #category : #accessing }
 MlTodoList class >> lists [
 	
-	^ self allLists reject: #isVirtual
-]
-
-{ #category : #private }
-MlTodoList class >> newBaseLists [
-	
-	^ { 
-		(MlTodoList newType: MlTodoType inbox).
-		(MlTodoList newType: MlTodoType unsorted).
-		(MlTodoList newType: MlTodoType life)
-	}
+	^ self allLists reject: [ :each | each isVirtual ]
 ]
 
 { #category : #'instance creation' }
@@ -101,7 +102,7 @@ MlTodoList class >> newType: aListType [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'system lists' }
 MlTodoList class >> search [
 
 	^ MlSearchList uniqueInstance
@@ -113,28 +114,43 @@ MlTodoList class >> summaryString [
 	^ '{1} pending task{2} ({3} completed).'
 ]
 
+{ #category : #'list accessing' }
+MlTodoList class >> systemLists [
+
+	^ MlApplication defaultApplication  
+		propertyAt: #systemLists 
+		ifAbsentPut: [ { self inbox . self focus . self unsorted . self life } ]
+]
+
 { #category : #accessing }
 MlTodoList class >> trash [
 
 	^ MlArchiveList uniqueInstance
 ]
 
-{ #category : #accessing }
+{ #category : #'system lists' }
 MlTodoList class >> unsorted [
 
-	^ self selectOne: [ :each | each type = MlTodoType unsorted typeName ]
+	^ self allLists select: [ :each | each type = MlTodoType unsorted typeName ]
 ]
 
 { #category : #accessing }
 MlTodoList class >> userLists [
 	
-	^ self selectMany: [ :each | each type = MlTodoType user typeName ]
+	^ self allListsOfType: MlTodoType user typeName
 ]
 
 { #category : #visiting }
 MlTodoList >> accept: aVisitor [
 
 	^ aVisitor visitTodoList: self
+]
+
+{ #category : #actions }
+MlTodoList >> addAndSaveTask: aTask [
+
+	self addTask: aTask.
+	self save
 ]
 
 { #category : #accessing }
@@ -242,7 +258,7 @@ MlTodoList >> receiveTask: aTask from: aTodoList [
 			removeTask: aTask 
 			follow: false.
 		"add the task as a regular task"
-		self saveTask: aTask.
+		self addAndSaveTask: aTask.
 		"ensure task is saved with changes"
 		aTask save
 		
@@ -286,13 +302,6 @@ MlTodoList >> removeTask: aTask follow: follow [
 { #category : #persistence }
 MlTodoList >> save [
 	self flag: #todo.
-]
-
-{ #category : #actions }
-MlTodoList >> saveTask: aTask [
-
-	self addTask: aTask.
-	self save
 ]
 
 { #category : #private }
@@ -343,8 +352,8 @@ MlTodoList >> unarchive [
 
 { #category : #writing }
 MlTodoList >> writeToFile [
-	| reference |
 
+	| reference |
 	reference := (self class todoListReference / self name) withExtension: 'ston'.
 	reference writeStreamDo: [ :stream | 
 		STON put: self onStreamPretty: stream ]

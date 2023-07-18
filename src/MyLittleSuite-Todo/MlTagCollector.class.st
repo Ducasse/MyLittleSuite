@@ -1,3 +1,6 @@
+"
+I'm a simple parser splitting [kkk] from string as tag kkk.
+"
 Class {
 	#name : #MlTagCollector,
 	#superclass : #Object,

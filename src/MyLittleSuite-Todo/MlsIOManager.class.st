@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'Folder'
 	],
-	#category : #'MyLittleSuite-Todo-IO'
+	#category : #'MyLittleSuite-Todo-Model'
 }
 
 { #category : #installation }
@@ -20,6 +20,12 @@ MlsIOManager class >> createFolder [
 MlsIOManager class >> folder [
 
 	^ Folder ifNil: [(FileSystem workingDirectory / 'TodoFiles/' ) resolve ]
+]
+
+{ #category : #installation }
+MlsIOManager class >> folder: aFileReference [
+
+	Folder := aFileReference 
 ]
 
 { #category : #installation }
@@ -69,7 +75,7 @@ MlsIOManager class >> saveTasks [
 	stream flush ] ensure: [ stream close ]	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MlsIOManager >> folder [
 	^ self class folder
 ]
@@ -83,7 +89,7 @@ MlsIOManager >> load [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MlsIOManager >> save [
 	"self new save"
 	

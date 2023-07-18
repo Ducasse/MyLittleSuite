@@ -15,6 +15,12 @@ MlAbstractList >> accept: aVisitor [
 ]
 
 { #category : #actions }
+MlAbstractList >> addAndSaveTask: aTask [ 
+
+	self subclassResponsibility
+]
+
+{ #category : #actions }
 MlAbstractList >> archiveCompletedTasks [
 
 	self tasks do: [ :each | each archiveIfDone ]
@@ -103,12 +109,6 @@ MlAbstractList >> pendingTasks [
 MlAbstractList >> pendingTasksSize [
 
 	^ self pendingTasks size
-]
-
-{ #category : #actions }
-MlAbstractList >> saveTask: aTask [ 
-
-	self subclassResponsibility
 ]
 
 { #category : #testing }

@@ -4,23 +4,24 @@ TodoApplication new run.
 ```
 "
 Class {
-	#name : #MlsTaskListPresenter,
+	#name : #MlsSimpleTaskListPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'todoListPresenter',
-		'addButton'
+		'addButton',
+		'saveButton'
 	],
 	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #'instance creation' }
-MlsTaskListPresenter class >> open [ 
+MlsSimpleTaskListPresenter class >> open [ 
 	<script>
 	self new open
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> addTask [
+MlsSimpleTaskListPresenter >> addTask [
 
 	(MlsTaskSimplePresenter newApplication: self application) 
 		task: MlsTask new;
@@ -29,25 +30,27 @@ MlsTaskListPresenter >> addTask [
 ]
 
 { #category : #initialization }
-MlsTaskListPresenter >> db [
+MlsSimpleTaskListPresenter >> db [
 
 	^ MlsTaskDB uniqueInstance
 ]
 
 { #category : #layout }
-MlsTaskListPresenter >> defaultLayout [ 
+MlsSimpleTaskListPresenter >> defaultLayout [ 
 	
 	^ (SpBoxLayout newTopToBottom 
 		add: todoListPresenter;
 		add: (SpBoxLayout newLeftToRight
 				addLast: addButton expand: false;
+				addLast: saveButton expand: false;
 				yourself) 
+		
 		expand: false;
 		yourself)
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> editSelectedTask [
+MlsSimpleTaskListPresenter >> editSelectedTask [
 
 	(MlsTaskSimplePresenter newApplication: self application)
 		task: todoListPresenter selection selectedItem;
@@ -57,7 +60,7 @@ MlsTaskListPresenter >> editSelectedTask [
 ]
 
 { #category : #initialization }
-MlsTaskListPresenter >> initializePresenters [
+MlsSimpleTaskListPresenter >> initializePresenters [
 
 	todoListPresenter := self newTable
 		                     addColumn:
@@ -73,15 +76,21 @@ MlsTaskListPresenter >> initializePresenters [
 			                      evaluated: [ :task | task title ]);	
 		                     yourself.
 	todoListPresenter contextMenu: self todoListContextMenu.
-	
+	"todoListPresenter 
+		searchMatching: [  ]."
+		
 	addButton := self newButton
 		             label: 'Add task';
 		             action: [ self addTask ];
+		             yourself.
+	saveButton := self newButton
+		             label: 'Save';
+		             action: [ self save ];
 		             yourself
 ]
 
 { #category : #initialization }
-MlsTaskListPresenter >> initializeWindow: aWindowPresenter [
+MlsSimpleTaskListPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter 
 		title: 'Todo List';
@@ -89,14 +98,20 @@ MlsTaskListPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> removeSelectedTask [
+MlsSimpleTaskListPresenter >> removeSelectedTask [
 
 	todoListPresenter selection selectedItem delete.
 	self updatePresenter
 ]
 
+{ #category : #actions }
+MlsSimpleTaskListPresenter >> save [
+
+	MlsIOManager saveTasks
+]
+
 { #category : #menu }
-MlsTaskListPresenter >> todoListContextMenu [
+MlsSimpleTaskListPresenter >> todoListContextMenu [
 
 	^ self newMenu 
 		addItem: [ :item | item 
@@ -108,6 +123,12 @@ MlsTaskListPresenter >> todoListContextMenu [
 ]
 
 { #category : #actions }
-MlsTaskListPresenter >> updatePresenter [
-	todoListPresenter items: self db tasks
+MlsSimpleTaskListPresenter >> updatePresenter [
+	| items |
+	items := self db tasks.
+	todoListPresenter items: items.
+	todoListPresenter selectFirst.
+	"items ifNotEmpty: [  
+		todoListPresenter selectItem: items last ]"
+
 ]

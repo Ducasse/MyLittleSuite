@@ -60,3 +60,9 @@ MlsTaskTest >> testTasksContainsDone [
 		self assert: (self taskManager tasks select: [ :t | t done ]) size equals: 1
 		]
 ]
+
+{ #category : #tests }
+MlsTaskTest >> testWithNewDuringStartWithAnEmptyTaskList [
+
+	self taskManager withNewDuring: [  MlsTaskDB tasks isEmpty ]
+]

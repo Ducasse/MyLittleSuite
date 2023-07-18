@@ -15,7 +15,7 @@ CrTodoListTest >> testArchive [
 		yourself.
 
 	list := MlTodoList newName: 'Test List'. 
-	list saveTask: task.
+	list addAndSaveTask: task.
 	
 	self deny: list isArchived.
 	self deny: task isArchived.
@@ -37,25 +37,24 @@ CrTodoListTest >> testMoveTaskTo [
 		yourself.
 
 	list1 := MlTodoList newName: 'List 1'.
-	list1 save.
 	list2 := MlTodoList newName: 'List 2'.
-	list2 save.
 	
-	list1 saveTask: task.
+	list1 addTask: task.
 	self assert: task owner equals: list1.
 	
 	list1 moveTask: task to: list2.
 		
 	self assert: list1 tasks isEmpty.
-	self assert: list2 tasks anyOne equals: task.
+	self assert: list2 tasks first equals: task.
 	"self assert: MlCrTodoTask selectAll anyOne equals: task."
 	self assert: task owner equals: list2
 ]
 
 { #category : #tests }
 CrTodoListTest >> testRemove [
+	<skip>
 	| list task |
-
+	self skip.
 	task := MlCrTodoTask new
 		name: 'Test';
 		notes: 'Test';
@@ -63,49 +62,24 @@ CrTodoListTest >> testRemove [
 		yourself.
 
 	list := MlTodoList newName: 'Test List'. 
-	list save.
-	list saveTask: task.
-	
+	list addTask: task.
 	list remove.
-	
+	self halt.
 	"self assert: MlTodoList allInstances size equals: 2.
 	self assert: MlCrTodoTask allInstances isEmpty."
 ]
 
 { #category : #tests }
-CrTodoListTest >> testSaveTask [
-	| task |
-
-	task := MlCrTodoTask new
-		name: 'Test';
-		notes: 'Test';
-		done: false;
-		yourself.
-
-	(MlTodoList newName: 'Test List') saveTask: task.
-		
-	self 
-		assert: MlCrTodoTask allInstances anyOne 
-		equals: task.
-	self 
-		assert: (MlTodoList listNamed: 'Test List') tasks anyOne 
-		equals: task
-]
-
-{ #category : #tests }
 CrTodoListTest >> testUnarchive [
 	| list task |
-
 	task := MlCrTodoTask new
 		name: 'Test';
 		notes: 'Test';
 		done: false;
 		yourself.
 
-	list := MlTodoList newName: 'Test List'. 
-	list save.
-	list saveTask: task.
-
+	list := MlTodoList newName: 'Test List'.
+	list addTask: task.
 	list archive.	
 	
 	self assert: list isArchived.

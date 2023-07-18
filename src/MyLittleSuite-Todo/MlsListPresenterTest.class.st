@@ -9,6 +9,6 @@ Class {
 
 { #category : #tests }
 MlsListPresenterTest >> tearDown [ 
-	presenter ifNotNil: [ presenter delete ].
+	presenter ifNotNil: [ presenter closeAllWindows ].
 	super tearDown
 ]

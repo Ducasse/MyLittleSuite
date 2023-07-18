@@ -16,6 +16,13 @@ MlFocusList >> accept: aVisitor [
 	^ aVisitor visitFocusList: self
 ]
 
+{ #category : #actions }
+MlFocusList >> addAndSaveTask: aTask [
+
+	aTask focus: true.
+	super addAndSaveTask: aTask
+]
+
 { #category : #accessing }
 MlFocusList >> basicTasks [
 
@@ -63,13 +70,6 @@ MlFocusList >> removeTask: aTask follow: follow [
 MlFocusList >> resetCache [
 
 	tasksCache := nil
-]
-
-{ #category : #actions }
-MlFocusList >> saveTask: aTask [
-
-	aTask focus: true.
-	super saveTask: aTask
 ]
 
 { #category : #accessing }

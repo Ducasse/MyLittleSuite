@@ -8,7 +8,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'freshId',
-		'tasks'
+		'tasks',
+		'isDirty'
 	],
 	#classVars : [
 		'UniqueInstance'
@@ -19,7 +20,7 @@ Class {
 { #category : #initialization }
 MlsTaskDB class >> reset [ 
 	<script>
-	^ UniqueInstance := nil
+	UniqueInstance := nil
 ]
 
 { #category : #'instance creation' }
@@ -44,7 +45,13 @@ MlsTaskDB class >> uniqueInstance: aDB [
 MlsTaskDB >> addTask: aTask [
 	
 	(tasks includes: aTask)
-		ifFalse: [ tasks add: aTask. self incrementFreshId ]
+		ifFalse: [ tasks add: aTask. self dirty ]
+]
+
+{ #category : #dirty }
+MlsTaskDB >> clean [
+
+	isDirty := false
 ]
 
 { #category : #'add/remove' }
@@ -52,7 +59,13 @@ MlsTaskDB >> deleteTask: aTask [
 
 	tasks remove: aTask ifAbsent: [ nil ].
 	"if we remove something that does not exist we could avoid to increment the freshId"
-	self incrementFreshId.
+	self dirty
+]
+
+{ #category : #dirty }
+MlsTaskDB >> dirty [ 
+
+	isDirty := true
 ]
 
 { #category : #accessing }
@@ -72,7 +85,14 @@ MlsTaskDB >> initialize [
 	
 	super initialize.
 	self setTasks: OrderedCollection new.
-	freshId := 1
+	freshId := 1.
+	isDirty := false
+]
+
+{ #category : #dirty }
+MlsTaskDB >> isDirty [ 
+
+	^ isDirty
 ]
 
 { #category : #accessing }
@@ -88,11 +108,21 @@ MlsTaskDB >> tasks [
 ]
 
 { #category : #'access protection' }
-MlsTaskDB >> withNewDuring: aBlock [
-	"Make sure that we execute aBlock on a new singleton"
+MlsTaskDB >> withEmptyTasksDuring: aBlock [
+	"Make sure that we execute aBlock on empty tasks"
 	
 	| tmp |
 	[ tmp := self tasks.
 		tasks := OrderedCollection new.
 		aBlock value ] ensure: [ tasks := tmp ]
+]
+
+{ #category : #'access protection' }
+MlsTaskDB >> withNewTaskDBDuring: aBlock [
+	"Make sure that we execute aBlock on a new singleton"
+	
+	| tmp |
+	[ tmp := self.
+	UniqueInstance := self class new.
+	aBlock value ] ensure: [ UniqueInstance := tmp ]
 ]

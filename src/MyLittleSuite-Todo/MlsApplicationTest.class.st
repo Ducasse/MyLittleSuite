@@ -29,7 +29,7 @@ MlsApplicationTest >> tearDown [
 { #category : #tests }
 MlsApplicationTest >> testEmptyTaskShouldNotFail [
 
-	MlsTaskDB uniqueInstance withNewDuring: 
+	MlsTaskDB uniqueInstance withEmptyTasksDuring: 
 		[ MlsTaskDB tasks isEmpty. 
 		application := MlsApplication new run ]
 ]

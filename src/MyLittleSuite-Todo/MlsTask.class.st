@@ -46,7 +46,7 @@ MlsTask >> description [
 MlsTask >> description: anObject [
 
 	description := anObject.
-	self incrementFreshId
+	self db dirty
 ]
 
 { #category : #accessing }
@@ -59,6 +59,7 @@ MlsTask >> done [
 MlsTask >> done: aBoolean [
 
 	done := aBoolean.
+	self db dirty.
 	aBoolean ifTrue: [ self doneDate: Date today ]
 	
 ]
@@ -72,7 +73,8 @@ MlsTask >> doneDate [
 { #category : #accessing }
 MlsTask >> doneDate: anObject [
 
-	doneDate := anObject
+	doneDate := anObject.
+	self db dirty
 ]
 
 { #category : #accessing }
@@ -85,6 +87,7 @@ MlsTask >> dueDate [
 MlsTask >> dueDate: anObject [
 
 	dueDate := anObject.
+	self db dirty
 	
 ]
 
@@ -136,5 +139,6 @@ MlsTask >> title [
 MlsTask >> title: anObject [
 
 	title := anObject.
+	self db dirty
 	
 ]

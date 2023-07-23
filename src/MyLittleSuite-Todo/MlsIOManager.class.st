@@ -2,109 +2,81 @@ Class {
 	#name : #MlsIOManager,
 	#superclass : #Object,
 	#instVars : [
-		'fileReference'
-	],
-	#classVars : [
-		'Folder'
+		'folderReference',
+		'workingDirectoryReference'
 	],
 	#category : #'MyLittleSuite-Todo-Model'
 }
 
 { #category : #installation }
-MlsIOManager class >> createFolder [
-
-	self folder ensureCreateDirectory 
-]
-
-{ #category : #installation }
-MlsIOManager class >> folder [
-
-	^ Folder ifNil: [(FileSystem workingDirectory / 'TodoFiles/' ) resolve ]
-]
-
-{ #category : #installation }
-MlsIOManager class >> folder: aFileReference [
-
-	Folder := aFileReference 
-]
-
-{ #category : #installation }
 MlsIOManager class >> initialize [
 
+	
 	self install
-]
-
-{ #category : #installation }
-MlsIOManager class >> install [
-
-	self folder exists 
-		ifFalse: [ self createFolder ].
-	self mainFile exists
-		ifTrue: [ 
-			"here we should pay attention because the image 
-			may be older than the file so we should check the freshId."
-			self loadTasks ].
-	SessionManager default 
-		registerLast: (ClassSessionHandler forClassNamed: self name)
-		inCategory: SessionManager default userCategory
-		
-]
-
-{ #category : #installation }
-MlsIOManager class >> loadTasks [
-	"self loadTasks"
-	
-	| taskDB | 
-	taskDB := STON fromStream: self mainFile readStream.
-	"we only install saved todos if there is no new ones."
-	
-	taskDB freshId >= MlsTaskDB uniqueInstance freshId 
-		ifTrue: [ MlsTaskDB uniqueInstance: taskDB ]
-	
-]
-
-{ #category : #installation }
-MlsIOManager class >> mainFile [
-	"self mainFile nextVersion"
-
-	^  self folder resolve: (self folder lastFileFor: 'tasks' extension: 'ston') 
-]
-
-{ #category : #installation }
-MlsIOManager class >> saveTasks [
-	"self saveTasks"
-	
-	| stream |
-	stream := self mainFile nextVersion writeStream. 
-	[ stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance).
-	stream flush ] ensure: [ stream close ]	
 ]
 
 { #category : #'system startup' }
 MlsIOManager class >> shutDown: isImageQuitting [
 	Transcript show: 'shutdown'.
-	self saveTasks
+	"self saveTasks"
 	
 ]
 
 { #category : #'system startup' }
 MlsIOManager class >> startUp: isResuming [
 	Transcript show: 'startUp'.
-	self loadTasks
+	"self loadTasks"
+]
+
+{ #category : #actions }
+MlsIOManager >> createFolder [
+
+	self folder ensureCreateDirectory 
 ]
 
 { #category : #accessing }
 MlsIOManager >> folder [
-	^ self class folder
+
+	^ folderReference ifNil: [ ( workingDirectoryReference / 'TodoFiles/' ) resolve ]
+]
+
+{ #category : #accessing }
+MlsIOManager >> folder: aFileReference [
+
+	folderReference := aFileReference.
+	self createFolder 
 ]
 
 { #category : #actions }
-MlsIOManager >> load [
-	"self new save"
+MlsIOManager >> loadTasks [
+	"self loadTasks"
 	
-	self class loadTasks
-	
+	| taskDB | 
+	taskDB := STON fromStream: self mainFile readStream.
+	MlsTaskDB uniqueInstance setTasks: taskDB.
 
+	
+	
+]
+
+{ #category : #accessing }
+MlsIOManager >> mainFile [
+	"self mainFile nextVersion"
+
+	^  self folder resolve: (self folder lastFileFor: 'tasks' extension: 'ston') 
+]
+
+{ #category : #actions }
+MlsIOManager >> safeLoadTasks [
+	"self loadTasks"
+	
+	| tasks | 
+	tasks:= STON fromStream: self mainFile readStream.
+	"we only install saved todos if there is no new ones."
+	
+	MlsTaskDB uniqueInstance isDirty 
+		ifFalse: [ MlsTaskDB uniqueInstance setTasks: tasks ]
+	
 ]
 
 { #category : #actions }
@@ -114,4 +86,27 @@ MlsIOManager >> save [
 	self class saveTasks
 	
 
+]
+
+{ #category : #actions }
+MlsIOManager >> saveTasks [
+	"self saveTasks"
+	
+	| stream |
+	stream := self mainFile nextVersion writeStream. 
+	[ stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance tasks).
+	MlsTaskDB uniqueInstance clean.
+	stream flush ] ensure: [ stream close ]	
+]
+
+{ #category : #accessing }
+MlsIOManager >> workingDirectoryReference [
+
+	^ workingDirectoryReference ifNil: [ FileSystem workingDirectory ]
+]
+
+{ #category : #accessing }
+MlsIOManager >> workingDirectoryReference: aWorkingDirectory [
+
+	workingDirectoryReference := aWorkingDirectory
 ]

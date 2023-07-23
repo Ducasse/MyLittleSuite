@@ -97,8 +97,10 @@ MlsTaskDB >> isDirty [
 
 { #category : #accessing }
 MlsTaskDB >> setTasks: anOrderedCollection [
-
-	tasks := anOrderedCollection 
+	"when we define a collection of tasks we consider that the base is then clean."
+	
+	tasks := anOrderedCollection.
+	self clean.
 ]
 
 { #category : #accessing }

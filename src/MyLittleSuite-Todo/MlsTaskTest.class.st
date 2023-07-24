@@ -4,13 +4,13 @@ Class {
 	#category : #'MyLittleSuite-Todo-Model'
 }
 
-{ #category : #tests }
+{ #category : #configure }
 MlsTaskTest >> taskClass [
 
 	^ MlsTask
 ]
 
-{ #category : #tests }
+{ #category : #configure }
 MlsTaskTest >> taskManager [
 
 	^ MlsTaskDB uniqueInstance
@@ -23,6 +23,17 @@ MlsTaskTest >> testAddTaskIsInTheList [
 		self taskManager addTask: (self taskClass new title: 'first'; done: false; yourself).
 	 	self assert: self taskManager tasks first title equals: 'first'.
 		self assert: self taskManager isDirty
+		]
+]
+
+{ #category : #'test - dirty' }
+MlsTaskTest >> testAddingATaskDirtyTheDB [
+
+	self taskManager withNewTaskDBDuring: [ 
+		| task |
+		task := (self taskClass new title: 'task'; done: false; yourself).
+		self taskManager addTask: task.
+	 	self assert: self taskManager isDirty.
 		]
 ]
 

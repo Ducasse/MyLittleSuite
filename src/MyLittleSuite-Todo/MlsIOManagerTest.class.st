@@ -27,7 +27,7 @@ MlsIOManagerTest >> setUp [
 	
 ]
 
-{ #category : #tests }
+{ #category : #initialization }
 MlsIOManagerTest >> tasksStonFile [
 
 	^ (filesystem workingDirectory / 'TodoFiles' / 'tasks.ston') 
@@ -54,6 +54,17 @@ MlsIOManagerTest >> tasksStonFileContents [
 ]
 
 { #category : #tests }
+MlsIOManagerTest >> testAssertFilesAreInAnotherPlace [
+
+	| manager |
+	manager := MlsIOManager new folderReference: filesystem / 'NewToo'.
+	
+	self assert: (filesystem / 'NewToo') isDirectory.
+	self assert:  (filesystem / 'NewToo' / 'tasks.ston') exists.
+	
+]
+
+{ #category : #'tests - setup' }
 MlsIOManagerTest >> testAssertFilesAreThere [
 
 	self assert: (filesystem / 'TodoFiles') isDirectory.
@@ -62,6 +73,38 @@ MlsIOManagerTest >> testAssertFilesAreThere [
 ]
 
 { #category : #tests }
+MlsIOManagerTest >> testCreateFolderInstallsFileZeroToo [
+
+	| manager |
+	manager := MlsIOManager new folderReference: filesystem / 'NewToo'.
+	self assert: (filesystem / 'NewToo') isDirectory.
+	self assert:  (filesystem / 'NewToo' / 'tasks.ston') exists.
+	
+]
+
+{ #category : #tests }
+MlsIOManagerTest >> testFilesSavedInAnotherPlace [
+
+	| manager |
+	manager := MlsIOManager new folderReference: filesystem / 'NewToo'.
+	manager saveTasks.
+	self assert:  (filesystem / 'NewToo' / 'tasks.1.ston') exists.
+	
+]
+
+{ #category : #tests }
+MlsIOManagerTest >> testFilesSavedInAnotherPlaceTwoTimes [
+
+	| manager |
+	manager := MlsIOManager new folderReference: filesystem / 'NewToo'.
+	manager saveTasks.
+	manager saveTasks.
+	self assert:  (filesystem / 'NewToo' / 'tasks.1.ston') exists.
+	self assert:  (filesystem / 'NewToo' / 'tasks.2.ston') exists.
+	
+]
+
+{ #category : #'tests - setup' }
 MlsIOManagerTest >> testStonToObjects [
 
 	| objects |

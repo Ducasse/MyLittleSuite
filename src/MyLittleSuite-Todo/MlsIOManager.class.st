@@ -5,43 +5,50 @@ Class {
 		'folderReference',
 		'workingDirectoryReference'
 	],
+	#classVars : [
+		'Folder',
+		'WorkingDirectory'
+	],
 	#category : #'MyLittleSuite-Todo-Model'
 }
 
 { #category : #installation }
 MlsIOManager class >> initialize [
-
-	
-	self install
+	WorkingDirectory := FileSystem workingDirectory.
+	Folder := (WorkingDirectory / 'TodoFiles/' ) resolve
 ]
 
 { #category : #'system startup' }
 MlsIOManager class >> shutDown: isImageQuitting [
-	Transcript show: 'shutdown'.
-	"self saveTasks"
+	
+	"this implies that we need to keep folder information as shared variable since
+	we may have set a different folder and the new instance should get initialized with it."
+	self new saveTasks
 	
 ]
 
 { #category : #'system startup' }
 MlsIOManager class >> startUp: isResuming [
-	Transcript show: 'startUp'.
-	"self loadTasks"
+
+	self new loadTasks
 ]
 
 { #category : #actions }
 MlsIOManager >> createFolder [
 
-	self folder ensureCreateDirectory 
+	self folderReference ensureCreateDirectory.
+	(self folderReference / 'tasks.ston') ensureCreateFile
+
 ]
 
 { #category : #accessing }
-MlsIOManager >> folder [
-
-	^ folderReference ifNil: [ ( workingDirectoryReference / 'TodoFiles/' ) resolve ]
+MlsIOManager >> folderReference [
+	
+	^ folderReference ifNil: [ folderReference := Folder  ]
 ]
 
 { #category : #accessing }
-MlsIOManager >> folder: aFileReference [
+MlsIOManager >> folderReference: aFileReference [
 
 	folderReference := aFileReference.
 	self createFolder 
@@ -51,9 +58,9 @@ MlsIOManager >> folder: aFileReference [
 MlsIOManager >> loadTasks [
 	"self loadTasks"
 	
-	| taskDB | 
-	taskDB := STON fromStream: self mainFile readStream.
-	MlsTaskDB uniqueInstance setTasks: taskDB.
+	| tasks | 
+	tasks := STON fromStream: self mainFile readStream.
+	MlsTaskDB uniqueInstance setTasks: tasks.
 
 	
 	
@@ -63,7 +70,7 @@ MlsIOManager >> loadTasks [
 MlsIOManager >> mainFile [
 	"self mainFile nextVersion"
 
-	^  self folder resolve: (self folder lastFileFor: 'tasks' extension: 'ston') 
+	^  self folderReference resolve: (self folderReference lastFileFor: 'tasks' extension: 'ston') 
 ]
 
 { #category : #actions }
@@ -80,21 +87,13 @@ MlsIOManager >> safeLoadTasks [
 ]
 
 { #category : #actions }
-MlsIOManager >> save [
-	"self new save"
-	
-	self class saveTasks
-	
-
-]
-
-{ #category : #actions }
 MlsIOManager >> saveTasks [
 	"self saveTasks"
 	
 	| stream |
 	stream := self mainFile nextVersion writeStream. 
 	[ stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance tasks).
+	"once saved, there is no dirty information anymore."
 	MlsTaskDB uniqueInstance clean.
 	stream flush ] ensure: [ stream close ]	
 ]
@@ -102,11 +101,12 @@ MlsIOManager >> saveTasks [
 { #category : #accessing }
 MlsIOManager >> workingDirectoryReference [
 
-	^ workingDirectoryReference ifNil: [ FileSystem workingDirectory ]
+	^ workingDirectoryReference ifNil: [ workingDirectoryReference := WorkingDirectory ]
 ]
 
 { #category : #accessing }
 MlsIOManager >> workingDirectoryReference: aWorkingDirectory [
 
-	workingDirectoryReference := aWorkingDirectory
+	workingDirectoryReference := aWorkingDirectory.
+	WorkingDirectory := aWorkingDirectory
 ]

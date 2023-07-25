@@ -90,7 +90,7 @@ MlsApplication >> openAsWorld: aBoolean [
 { #category : #running }
 MlsApplication >> start [
 	
-	self halt.
+	
 	openAsWorld ifTrue: [ 
 		self startFull.
 	^ self ].

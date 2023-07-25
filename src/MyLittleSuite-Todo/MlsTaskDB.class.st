@@ -68,24 +68,11 @@ MlsTaskDB >> dirty [
 	isDirty := true
 ]
 
-{ #category : #accessing }
-MlsTaskDB >> freshId [
-
-	^ freshId
-]
-
-{ #category : #'add/remove' }
-MlsTaskDB >> incrementFreshId [
-
-	freshId := freshId + 1
-]
-
 { #category : #initialization }
 MlsTaskDB >> initialize [
-	
+
 	super initialize.
 	self setTasks: OrderedCollection new.
-	freshId := 1.
 	isDirty := false
 ]
 

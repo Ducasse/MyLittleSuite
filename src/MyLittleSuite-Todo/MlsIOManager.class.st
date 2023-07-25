@@ -90,12 +90,15 @@ MlsIOManager >> safeLoadTasks [
 MlsIOManager >> saveTasks [
 	"self saveTasks"
 	
-	| stream |
-	stream := self mainFile nextVersion writeStream. 
-	[ stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance tasks).
-	"once saved, there is no dirty information anymore."
-	MlsTaskDB uniqueInstance clean.
-	stream flush ] ensure: [ stream close ]	
+	"only save when necessary"
+	MlsTaskDB uniqueInstance isDirty 
+		ifTrue: [ | stream |
+			stream := self mainFile nextVersion writeStream.
+			[
+			stream nextPutAll: (STON toStringPretty: MlsTaskDB uniqueInstance tasks).
+			"once saved, there is no dirty information anymore."
+			MlsTaskDB uniqueInstance clean.
+			stream flush ] ensure: [ stream close ] ]
 ]
 
 { #category : #accessing }

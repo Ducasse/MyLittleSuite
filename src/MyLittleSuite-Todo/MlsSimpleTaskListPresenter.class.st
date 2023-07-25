@@ -107,7 +107,7 @@ MlsSimpleTaskListPresenter >> removeSelectedTask [
 { #category : #actions }
 MlsSimpleTaskListPresenter >> save [
 
-	MlsIOManager saveTasks
+	MlsIOManager new saveTasks
 ]
 
 { #category : #menu }

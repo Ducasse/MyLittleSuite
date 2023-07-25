@@ -17,9 +17,47 @@ Class {
 	#category : #'MyLittleSuite-Todo-UI'
 }
 
+{ #category : #settings }
+MlsApplication class >> closeAllWindows [
+
+	super closeAllWindows.
+	[ World closeAllWindowsDiscardingChanges ]
+		on: ProvideAnswerNotification
+		do: [ :err | err return: false ]
+]
+
+{ #category : #settings }
+MlsApplication class >> closeWindowsAndOpenDevelopmentEnvironment [
+	PanelMorph allInstancesDo: [  :pm | pm delete ].
+	self closeAllWindows.
+	TaskbarMorph reset.
+	Smalltalk tools workspace openContents: 'PharoLauncherApplication open.'.
+
+	"PanelMorph comes from use of #openWorldWithSpec"
+]
+
+{ #category : #settings }
+MlsApplication class >> closeWindowsAndOpenLauncher [
+
+	self
+		closeAllWindows;
+		openFull
+]
+
 { #category : #accessing }
 MlsApplication class >> descriptionText [	
 	^ 'A todo App under dev'
+]
+
+{ #category : #settings }
+MlsApplication class >> developmentEnvironmentEnabled: aBoolean [
+
+	aBoolean
+		ifTrue: [ "self undoAll. "
+			self closeWindowsAndOpenDevelopmentEnvironment
+			 ]
+		ifFalse: [ "self doAll. 
+			self closeWindowsAndOpenLauncher." ]
 ]
 
 { #category : #accessing }
@@ -39,7 +77,7 @@ MlsApplication class >> menuCommandOn: aBuilder [
 		icon: (aBuilder iconNamed: self iconName)
 ]
 
-{ #category : #'instance creation' }
+{ #category : #opening }
 MlsApplication class >> open [
 	<script>
 	
@@ -48,13 +86,26 @@ MlsApplication class >> open [
 		run
 ]
 
-{ #category : #scripts }
+{ #category : #opening }
 MlsApplication class >> openFull [ 
 	<script>
 	
 	^ (Default := self new) 
 		beOpenedAsWorld;
 		run
+]
+
+{ #category : #settings }
+MlsApplication class >> settingsOn: aBuilder [
+	<systemsettings>
+	(aBuilder setting: #developmentEnvironmentEnabled) 
+		parent: #Todo;
+		target: self;
+		order: 60;
+		label: 'Enable development environment' translated;
+		description: 'Missing a feature?  Hey come join in!  Add your custom feature.
+When enabled, exits the application into the Pharo development environment.
+When disabled, closes all windows and locks application as the only running application. '.
 ]
 
 { #category : #opening }

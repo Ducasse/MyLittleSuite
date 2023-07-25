@@ -7,7 +7,6 @@ Class {
 	#name : #MlsTaskDB,
 	#superclass : #Object,
 	#instVars : [
-		'freshId',
 		'tasks',
 		'isDirty'
 	],

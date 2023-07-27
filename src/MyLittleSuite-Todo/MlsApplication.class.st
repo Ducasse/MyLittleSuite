@@ -14,13 +14,15 @@ Class {
 	#classVars : [
 		'Default'
 	],
+	#classInstVars : [
+		'developmentEnvironmentEnabled'
+	],
 	#category : #'MyLittleSuite-Todo-UI'
 }
 
 { #category : #settings }
 MlsApplication class >> closeAllWindows [
 
-	super closeAllWindows.
 	[ World closeAllWindowsDiscardingChanges ]
 		on: ProvideAnswerNotification
 		do: [ :err | err return: false ]
@@ -49,13 +51,18 @@ MlsApplication class >> descriptionText [
 	^ 'A todo App under dev'
 ]
 
+{ #category : #accessing }
+MlsApplication class >> developmentEnvironmentEnabled [
+
+    ^ developmentEnvironmentEnabled
+]
+
 { #category : #settings }
 MlsApplication class >> developmentEnvironmentEnabled: aBoolean [
-
+   developmentEnvironmentEnabled := aBoolean.
 	aBoolean
 		ifTrue: [ "self undoAll. "
-			self closeWindowsAndOpenDevelopmentEnvironment
-			 ]
+		self closeWindowsAndOpenDevelopmentEnvironment ]
 		ifFalse: [ "self doAll. 
 			self closeWindowsAndOpenLauncher." ]
 ]
@@ -63,6 +70,12 @@ MlsApplication class >> developmentEnvironmentEnabled: aBoolean [
 { #category : #accessing }
 MlsApplication class >> iconName [
 	^ #jigsawIcon
+]
+
+{ #category : #initialization }
+MlsApplication class >> initialize [ 
+
+   developmentEnvironmentEnabled := true
 ]
 
 { #category : #'world menu' }

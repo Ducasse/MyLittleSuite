@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'todoListPresenter',
 		'addButton',
-		'saveButton'
+		'saveButton',
+		'toolbarPresenter'
 	],
 	#category : #'MyLittleSuite-Todo-UI'
 }
@@ -18,6 +19,16 @@ Class {
 MlsSimpleTaskListPresenter class >> open [ 
 	<script>
 	self new open
+]
+
+{ #category : #toolbar }
+MlsSimpleTaskListPresenter >> addButton [
+
+	^ SpToolbarButtonPresenter new
+		  icon: (self iconNamed: #smallOk);
+		  label: 'New Task';
+		  action: [ self addTask ];
+		  yourself
 ]
 
 { #category : #actions }
@@ -29,6 +40,17 @@ MlsSimpleTaskListPresenter >> addTask [
 	self updatePresenter
 ]
 
+{ #category : #toolbar }
+MlsSimpleTaskListPresenter >> buildToolbar [
+
+	^ self newPresenter
+		layout: (SpBoxLayout newLeftToRight
+			add: (self newTaskToolbar add: self addButton ;yourself)  expand: false;
+			addLast: (self newTaskToolbar add: self settingButton; yourself) expand: false;
+			yourself);
+		yourself
+]
+
 { #category : #initialization }
 MlsSimpleTaskListPresenter >> db [
 
@@ -36,17 +58,17 @@ MlsSimpleTaskListPresenter >> db [
 ]
 
 { #category : #layout }
-MlsSimpleTaskListPresenter >> defaultLayout [ 
-	
-	^ (SpBoxLayout newTopToBottom 
-		add: todoListPresenter;
-		add: (SpBoxLayout newLeftToRight
-				addLast: addButton expand: false;
-				addLast: saveButton expand: false;
-				yourself) 
-		
-		expand: false;
-		yourself)
+MlsSimpleTaskListPresenter >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: toolbarPresenter expand: false ;
+		  add: todoListPresenter;
+		  add: (SpBoxLayout newLeftToRight
+				   addLast: addButton expand: false;
+				   addLast: saveButton expand: false;
+				   yourself)
+		  expand: false;
+		  yourself
 ]
 
 { #category : #actions }
@@ -62,9 +84,10 @@ MlsSimpleTaskListPresenter >> editSelectedTask [
 { #category : #initialization }
 MlsSimpleTaskListPresenter >> initializePresenters [
 
+   toolbarPresenter := self buildToolbar.
 	todoListPresenter := self newTable
 		                     addColumn:
-			                     ((SpCheckBoxTableColumn evaluated: [ :task | 
+			                     ((SpCheckBoxTableColumn evaluated: [ :task |
 					                       task isDone ])
 				                      width: 20;
 				                      onActivation: [ :task | task done: true ];
@@ -73,20 +96,20 @@ MlsSimpleTaskListPresenter >> initializePresenters [
 		                     addColumn:
 		                     (SpStringTableColumn
 			                      title: 'Title'
-			                      evaluated: [ :task | task title ]);	
+			                      evaluated: [ :task | task title ]);
 		                     yourself.
 	todoListPresenter contextMenu: self todoListContextMenu.
 	"todoListPresenter 
 		searchMatching: [  ]."
-		
+
 	addButton := self newButton
 		             label: 'Add task';
 		             action: [ self addTask ];
 		             yourself.
 	saveButton := self newButton
-		             label: 'Save';
-		             action: [ self save ];
-		             yourself
+		              label: 'Save';
+		              action: [ self save ];
+		              yourself
 ]
 
 { #category : #initialization }
@@ -95,6 +118,14 @@ MlsSimpleTaskListPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		title: 'Todo List';
 		initialExtent: 500@500
+]
+
+{ #category : #toolbar }
+MlsSimpleTaskListPresenter >> newTaskToolbar [
+
+	^ self newToolbar
+		addStyle: 'compact';
+		yourself
 ]
 
 { #category : #actions }
@@ -108,6 +139,18 @@ MlsSimpleTaskListPresenter >> removeSelectedTask [
 MlsSimpleTaskListPresenter >> save [
 
 	MlsIOManager new saveTasks
+]
+
+{ #category : #toolbar }
+MlsSimpleTaskListPresenter >> settingButton [
+
+	^ SpToolbarButtonPresenter new
+		  icon: (self iconNamed: #smallOk);
+		  label: 'Settings';
+		  action: [ SettingBrowser new 
+			              changePackageSet: { #'MyLittleSuite-Todo' asPackage};
+		                 open ];
+		  yourself
 ]
 
 { #category : #menu }

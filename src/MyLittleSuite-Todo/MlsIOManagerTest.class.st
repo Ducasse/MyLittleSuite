@@ -93,15 +93,31 @@ MlsIOManagerTest >> testFilesSavedInAnotherPlace [
 ]
 
 { #category : #tests }
+MlsIOManagerTest >> testFilesSavedInAnotherPlaceButNotDirty [
+
+	| manager |
+	manager := MlsIOManager new folderReference: filesystem / 'NewToo'.
+	manager saveTasks.
+	self assert: (filesystem / 'NewToo' / 'tasks.ston') exists.
+	MlsTaskDB uniqueInstance dirty.
+	manager saveTasks.
+	manager saveTasks.
+	self assert: (filesystem / 'NewToo' / 'tasks.1.ston') exists.
+	self deny: (filesystem / 'NewToo' / 'tasks.2.ston') exists
+]
+
+{ #category : #tests }
 MlsIOManagerTest >> testFilesSavedInAnotherPlaceTwoTimes [
 
 	| manager |
 	manager := MlsIOManager new folderReference: filesystem / 'NewToo'.
 	manager saveTasks.
+	MlsTaskDB uniqueInstance dirty.
 	manager saveTasks.
-	self assert:  (filesystem / 'NewToo' / 'tasks.1.ston') exists.
-	self assert:  (filesystem / 'NewToo' / 'tasks.2.ston') exists.
-	
+	MlsTaskDB uniqueInstance dirty.
+	manager saveTasks.
+	self assert: (filesystem / 'NewToo' / 'tasks.1.ston') exists.
+	self assert: (filesystem / 'NewToo' / 'tasks.2.ston') exists
 ]
 
 { #category : #'tests - setup' }
